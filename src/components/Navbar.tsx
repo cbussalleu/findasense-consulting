@@ -29,15 +29,15 @@ export const Navbar = () => {
     >
       <div className="section-container flex items-center justify-between">
         <a href="/" className="flex items-center">
-          <span className="text-xl font-display tracking-tighter text-white">CX AGENCY</span>
+          <span className="text-xl font-display tracking-tighter text-white">FAS CONSULTING</span>
         </a>
 
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#services" className="nav-link">Services</a>
-          <a href="#work" className="nav-link">Work</a>
-          <a href="#about" className="nav-link">About</a>
+          <a href="#services" className="nav-link">Servicios</a>
+          <a href="#about" className="nav-link">Nosotros</a>
+          <a href="#work" className="nav-link">Clientes</a>
           <a href="#contact" className="button-primary">
-            <span>Let's Talk</span>
+            <span>Contacto</span>
           </a>
         </nav>
 
@@ -58,28 +58,28 @@ export const Navbar = () => {
               className="nav-link py-2"
               onClick={() => setIsMenuOpen(false)}
             >
-              Services
-            </a>
-            <a 
-              href="#work" 
-              className="nav-link py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Work
+              Servicios
             </a>
             <a 
               href="#about" 
               className="nav-link py-2"
               onClick={() => setIsMenuOpen(false)}
             >
-              About
+              Nosotros
+            </a>
+            <a 
+              href="#work" 
+              className="nav-link py-2"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Clientes
             </a>
             <a 
               href="#contact" 
               className="button-primary inline-block text-center w-full"
               onClick={() => setIsMenuOpen(false)}
             >
-              <span>Let's Talk</span>
+              <span>Contacto</span>
             </a>
           </div>
         </div>
