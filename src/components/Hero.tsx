@@ -40,103 +40,103 @@ export const Hero = () => {
             <div className="chip bg-muted text-purple mb-5 ml-0 md:ml-16">IMPLEMENTAMOS Y <span className="text-purple-light">GESTIONAMOS EL CAMBIO</span></div>
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-tight text-white mb-8">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-tight text-white mb-8 uppercase w-full">
             <div className="text-reveal-container">
               <span className="text-reveal delay-50">E</span>
-              <span className="text-reveal delay-100">l</span>
-              <span className="text-reveal delay-150"> </span>
-              <span className="text-reveal delay-200">s</span>
-              <span className="text-reveal delay-250">o</span>
-              <span className="text-reveal delay-300">p</span>
-              <span className="text-reveal delay-350">o</span>
-              <span className="text-reveal delay-400">r</span>
-              <span className="text-reveal delay-450">t</span>
-              <span className="text-reveal delay-500">e</span>
+              <span className="text-reveal delay-100">L</span>
+              <span className="text-reveal delay-150">&nbsp;</span>
+              <span className="text-reveal delay-200">S</span>
+              <span className="text-reveal delay-250">O</span>
+              <span className="text-reveal delay-300">P</span>
+              <span className="text-reveal delay-350">O</span>
+              <span className="text-reveal delay-400">R</span>
+              <span className="text-reveal delay-450">T</span>
+              <span className="text-reveal delay-500">E</span>
             </div>
             <div className="text-reveal-container mt-1">
-              <span className="text-reveal delay-100">e</span>
-              <span className="text-reveal delay-150">s</span>
-              <span className="text-reveal delay-200">t</span>
-              <span className="text-reveal delay-250">r</span>
-              <span className="text-reveal delay-300">a</span>
-              <span className="text-reveal delay-350">t</span>
-              <span className="text-reveal delay-400">é</span>
-              <span className="text-reveal delay-450">g</span>
-              <span className="text-reveal delay-500">i</span>
-              <span className="text-reveal delay-550">c</span>
-              <span className="text-reveal delay-600">o</span>
+              <span className="text-reveal delay-100">E</span>
+              <span className="text-reveal delay-150">S</span>
+              <span className="text-reveal delay-200">T</span>
+              <span className="text-reveal delay-250">R</span>
+              <span className="text-reveal delay-300">A</span>
+              <span className="text-reveal delay-350">T</span>
+              <span className="text-reveal delay-400">É</span>
+              <span className="text-reveal delay-450">G</span>
+              <span className="text-reveal delay-500">I</span>
+              <span className="text-reveal delay-550">C</span>
+              <span className="text-reveal delay-600">O</span>
             </div>
             <div className="text-reveal-container mt-1">
-              <span className="text-reveal delay-150">p</span>
-              <span className="text-reveal delay-200">a</span>
-              <span className="text-reveal delay-250">r</span>
-              <span className="text-reveal delay-300">a</span>
-              <span className="text-reveal delay-350"> </span>
-              <span className="text-reveal delay-400">d</span>
-              <span className="text-reveal delay-450">e</span>
-              <span className="text-reveal delay-500">s</span>
-              <span className="text-reveal delay-550">a</span>
-              <span className="text-reveal delay-600">f</span>
-              <span className="text-reveal delay-650">í</span>
-              <span className="text-reveal delay-700">o</span>
-              <span className="text-reveal delay-750">s</span>
+              <span className="text-reveal delay-150">P</span>
+              <span className="text-reveal delay-200">A</span>
+              <span className="text-reveal delay-250">R</span>
+              <span className="text-reveal delay-300">A</span>
+              <span className="text-reveal delay-350">&nbsp;</span>
+              <span className="text-reveal delay-400">D</span>
+              <span className="text-reveal delay-450">E</span>
+              <span className="text-reveal delay-500">S</span>
+              <span className="text-reveal delay-550">A</span>
+              <span className="text-reveal delay-600">F</span>
+              <span className="text-reveal delay-650">Í</span>
+              <span className="text-reveal delay-700">O</span>
+              <span className="text-reveal delay-750">S</span>
             </div>
             <div className="text-reveal-container mt-1">
-              <span className="text-reveal delay-200">d</span>
-              <span className="text-reveal delay-250">e</span>
-              <span className="text-reveal delay-300"> </span>
+              <span className="text-reveal delay-200">D</span>
+              <span className="text-reveal delay-250">E</span>
+              <span className="text-reveal delay-300">&nbsp;</span>
               <span className="text-reveal delay-350">C</span>
               <span className="text-reveal delay-400">X</span>
-              <span className="text-reveal delay-450"> </span>
-              <span className="text-reveal delay-500">q</span>
-              <span className="text-reveal delay-550">u</span>
-              <span className="text-reveal delay-600">e</span>
+              <span className="text-reveal delay-450">&nbsp;</span>
+              <span className="text-reveal delay-500">Q</span>
+              <span className="text-reveal delay-550">U</span>
+              <span className="text-reveal delay-600">E</span>
             </div>
             <div className="text-reveal-container mt-1">
-              <span className="text-reveal delay-250">r</span>
-              <span className="text-reveal delay-300">e</span>
-              <span className="text-reveal delay-350">q</span>
-              <span className="text-reveal delay-400">u</span>
-              <span className="text-reveal delay-450">i</span>
-              <span className="text-reveal delay-500">e</span>
-              <span className="text-reveal delay-550">r</span>
-              <span className="text-reveal delay-600">e</span>
-              <span className="text-reveal delay-650">n</span>
-              <span className="text-reveal delay-700"> </span>
-              <span className="text-reveal delay-750">u</span>
-              <span className="text-reveal delay-800">n</span>
+              <span className="text-reveal delay-250">R</span>
+              <span className="text-reveal delay-300">E</span>
+              <span className="text-reveal delay-350">Q</span>
+              <span className="text-reveal delay-400">U</span>
+              <span className="text-reveal delay-450">I</span>
+              <span className="text-reveal delay-500">E</span>
+              <span className="text-reveal delay-550">R</span>
+              <span className="text-reveal delay-600">E</span>
+              <span className="text-reveal delay-650">N</span>
+              <span className="text-reveal delay-700">&nbsp;</span>
+              <span className="text-reveal delay-750">U</span>
+              <span className="text-reveal delay-800">N</span>
             </div>
             <div className="text-reveal-container mt-1">
-              <span className="text-reveal delay-300">e</span>
-              <span className="text-reveal delay-350">n</span>
-              <span className="text-reveal delay-400">f</span>
-              <span className="text-reveal delay-450">o</span>
-              <span className="text-reveal delay-500">q</span>
-              <span className="text-reveal delay-550">u</span>
-              <span className="text-reveal delay-600">e</span>
-              <span className="text-reveal delay-650"> </span>
-              <span className="text-reveal delay-700">i</span>
-              <span className="text-reveal delay-750">n</span>
-              <span className="text-reveal delay-800">t</span>
-              <span className="text-reveal delay-850">e</span>
-              <span className="text-reveal delay-900">g</span>
-              <span className="text-reveal delay-950">r</span>
-              <span className="text-reveal delay-1000">a</span>
-              <span className="text-reveal delay-1050">l</span>
+              <span className="text-reveal delay-300">E</span>
+              <span className="text-reveal delay-350">N</span>
+              <span className="text-reveal delay-400">F</span>
+              <span className="text-reveal delay-450">O</span>
+              <span className="text-reveal delay-500">Q</span>
+              <span className="text-reveal delay-550">U</span>
+              <span className="text-reveal delay-600">E</span>
+              <span className="text-reveal delay-650">&nbsp;</span>
+              <span className="text-reveal delay-700">I</span>
+              <span className="text-reveal delay-750">N</span>
+              <span className="text-reveal delay-800">T</span>
+              <span className="text-reveal delay-850">E</span>
+              <span className="text-reveal delay-900">G</span>
+              <span className="text-reveal delay-950">R</span>
+              <span className="text-reveal delay-1000">A</span>
+              <span className="text-reveal delay-1050">L</span>
             </div>
           </h1>
           
           <div className="mb-12 opacity-0 animate-fade-in" style={{ animationDelay: '1.5s', animationFillMode: 'forwards' }}>
             <a href="#services" className="button-primary group">
               <span className="flex items-center">
-                Aprende más de Consulting 
+                APRENDE MÁS DE CONSULTING 
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={18} />
               </span>
             </a>
           </div>
           
           <div className="w-full mt-16 relative">
-            <div className="w-full aspect-square md:aspect-[2/1] max-w-3xl mx-auto relative opacity-0 animate-fade-in" style={{ animationDelay: '1.8s', animationFillMode: 'forwards' }}>
+            <div className="w-full aspect-square md:aspect-[2/1] max-w-4xl mx-auto relative opacity-0 animate-fade-in" style={{ animationDelay: '1.8s', animationFillMode: 'forwards' }}>
               <div className="absolute -top-10 -left-10 w-40 h-40 bg-cream rounded-full mix-blend-screen filter blur-xl opacity-50 animate-pulse"></div>
               <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-accent rounded-full mix-blend-screen filter blur-xl opacity-50 animate-pulse" style={{ animationDelay: '1s' }}></div>
               

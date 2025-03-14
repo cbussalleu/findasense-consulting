@@ -147,6 +147,7 @@
 
   .text-reveal {
     @apply relative translate-y-full opacity-0 animate-text-reveal inline-block;
+    margin-right: 0.1em; /* Espacio entre caracteres */
   }
 
   .highlight-text {
