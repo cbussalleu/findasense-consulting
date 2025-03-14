@@ -24,7 +24,7 @@ export const Navbar = () => {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4",
-        isScrolled ? "bg-dark/90 backdrop-blur-md py-3" : "bg-transparent"
+        isScrolled ? "bg-secondary/90 backdrop-blur-md py-3" : "bg-transparent"
       )}
     >
       <div className="section-container flex items-center justify-between">
@@ -33,11 +33,11 @@ export const Navbar = () => {
         </a>
 
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#services" className="nav-link">Servicios</a>
-          <a href="#about" className="nav-link">Nosotros</a>
-          <a href="#work" className="nav-link">Clientes</a>
+          <a href="#services" className="nav-link">Soluciones</a>
+          <a href="#about" className="nav-link">Casos</a>
+          <a href="#work" className="nav-link">Recursos</a>
           <a href="#contact" className="button-primary">
-            <span>Contacto</span>
+            <span>Colabora con nosotros</span>
           </a>
         </nav>
 
@@ -51,35 +51,35 @@ export const Navbar = () => {
       </div>
 
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-dark/95 backdrop-blur-md py-4 animate-fade-in">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-secondary/95 backdrop-blur-md py-4 animate-fade-in">
           <div className="section-container flex flex-col space-y-4">
             <a 
               href="#services" 
               className="nav-link py-2"
               onClick={() => setIsMenuOpen(false)}
             >
-              Servicios
+              Soluciones
             </a>
             <a 
               href="#about" 
               className="nav-link py-2"
               onClick={() => setIsMenuOpen(false)}
             >
-              Nosotros
+              Casos
             </a>
             <a 
               href="#work" 
               className="nav-link py-2"
               onClick={() => setIsMenuOpen(false)}
             >
-              Clientes
+              Recursos
             </a>
             <a 
               href="#contact" 
               className="button-primary inline-block text-center w-full"
               onClick={() => setIsMenuOpen(false)}
             >
-              <span>Contacto</span>
+              <span>Colabora con nosotros</span>
             </a>
           </div>
         </div>

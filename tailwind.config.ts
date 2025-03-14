@@ -20,8 +20,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ["Inter", "sans-serif"],
-				display: ["'Archivo Black'", "sans-serif"],
+				sans: ["Poppins", "Inter", "sans-serif"],
+				display: ["Oswald", "'Archivo Black'", "sans-serif"],
 				mono: ["'Space Mono'", "monospace"]
 			},
 			colors: {
@@ -30,30 +30,36 @@ export default {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
-				primary: 'hsl(var(--primary))',
-				'primary-foreground': 'hsl(var(--primary-foreground))',
-				secondary: 'hsl(var(--secondary))',
-				'secondary-foreground': 'hsl(var(--secondary-foreground))',
+				primary: {
+					DEFAULT: '#EF4444',
+					dark: '#DC2626'
+				},
+				secondary: {
+					DEFAULT: '#070707',
+					light: '#262626'
+				},
+				accent: {
+					DEFAULT: '#4F46E5',
+					light: '#6366F1'
+				},
 				destructive: 'hsl(var(--destructive))',
 				'destructive-foreground': 'hsl(var(--destructive-foreground))',
 				muted: 'hsl(var(--muted))',
 				'muted-foreground': 'hsl(var(--muted-foreground))',
-				accent: 'hsl(var(--accent))',
-				'accent-foreground': 'hsl(var(--accent-foreground))',
 				popover: 'hsl(var(--popover))',
 				'popover-foreground': 'hsl(var(--popover-foreground))',
 				card: 'hsl(var(--card))',
 				'card-foreground': 'hsl(var(--card-foreground))',
 				purple: {
-					DEFAULT: '#6E41E2',
-					light: '#8561FF'
+					DEFAULT: '#4F46E5',
+					light: '#6366F1'
 				},
 				coral: {
-					DEFAULT: '#FF5C5C',
-					light: '#FF7B7B'
+					DEFAULT: '#EF4444',
+					light: '#F87171'
 				},
 				cream: '#FFF0E5',
-				dark: '#121212'
+				dark: '#070707'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

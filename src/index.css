@@ -1,6 +1,6 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
@@ -9,25 +9,25 @@
 
 @layer base {
   :root {
-    --background: 0 0% 7%;
+    --background: 0 0% 3%;
     --foreground: 210 40% 98%;
 
-    --card: 0 0% 10%;
+    --card: 0 0% 7%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 7%;
+    --popover: 0 0% 3%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 265 71% 57%;
+    --primary: 0 84% 60%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 0 81% 68%;
+    --secondary: 240 6% 3%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 0 0% 15%;
     --muted-foreground: 215 20.2% 75.1%;
 
-    --accent: 0 0% 15%;
+    --accent: 247 81% 59%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -35,7 +35,7 @@
 
     --border: 215 27.9% 16.9%;
     --input: 215 27.9% 16.9%;
-    --ring: 265 71% 57%;
+    --ring: 247 81% 59%;
 
     --radius: 0.5rem;
   }
@@ -73,14 +73,56 @@
   .delay-200 {
     animation-delay: 0.2s;
   }
+  .delay-250 {
+    animation-delay: 0.25s;
+  }
   .delay-300 {
     animation-delay: 0.3s;
+  }
+  .delay-350 {
+    animation-delay: 0.35s;
   }
   .delay-400 {
     animation-delay: 0.4s;
   }
+  .delay-450 {
+    animation-delay: 0.45s;
+  }
   .delay-500 {
     animation-delay: 0.5s;
+  }
+  .delay-550 {
+    animation-delay: 0.55s;
+  }
+  .delay-600 {
+    animation-delay: 0.6s;
+  }
+  .delay-650 {
+    animation-delay: 0.65s;
+  }
+  .delay-700 {
+    animation-delay: 0.7s;
+  }
+  .delay-750 {
+    animation-delay: 0.75s;
+  }
+  .delay-800 {
+    animation-delay: 0.8s;
+  }
+  .delay-850 {
+    animation-delay: 0.85s;
+  }
+  .delay-900 {
+    animation-delay: 0.9s;
+  }
+  .delay-950 {
+    animation-delay: 0.95s;
+  }
+  .delay-1000 {
+    animation-delay: 1s;
+  }
+  .delay-1050 {
+    animation-delay: 1.05s;
   }
 
   /* Custom utils */
@@ -89,7 +131,7 @@
   }
 
   .glass {
-    background: rgba(18, 18, 18, 0.5);
+    background: rgba(7, 7, 7, 0.5);
     backdrop-filter: blur(10px);
   }
 
@@ -108,7 +150,7 @@
   }
 
   .highlight-text {
-    @apply text-purple relative inline-block;
+    @apply text-accent relative inline-block;
   }
 
   .chip {
@@ -116,12 +158,12 @@
   }
 
   .button-primary {
-    @apply relative px-8 py-3 bg-purple text-white rounded-full overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+    @apply relative px-8 py-3 bg-primary text-white rounded-full overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
   }
 
   .button-primary::before {
     content: '';
-    @apply absolute inset-0 bg-purple-light transform scale-x-0 origin-right transition-transform duration-500;
+    @apply absolute inset-0 bg-primary-dark transform scale-x-0 origin-right transition-transform duration-500;
   }
 
   .button-primary:hover::before {
@@ -141,6 +183,6 @@
   }
 
   .nav-link {
-    @apply relative text-white/70 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-purple after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+    @apply relative text-white/70 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-accent after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
   }
 }
