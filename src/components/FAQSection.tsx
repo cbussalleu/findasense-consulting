@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const faqs = [
