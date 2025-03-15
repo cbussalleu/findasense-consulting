@@ -1,5 +1,6 @@
 
 import { useEffect, useRef } from 'react';
+import { ArrowRight } from 'lucide-react';
 
 export const ProofSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -35,10 +36,10 @@ export const ProofSection = () => {
       <div className="section-container">
         <div className="mb-16">
           <h2 className="uppercase font-display text-white text-lg md:text-xl mb-1 tracking-tight">
-            PROOF
+            ÚLTIMOS
           </h2>
           <h2 className="uppercase font-display text-purple text-lg md:text-xl mb-12 tracking-tight">
-            OF SUCCESS
+            PROYECTOS
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -53,6 +54,12 @@ export const ProofSection = () => {
               <h3 className="text-xl text-white mb-2">Coca-Cola</h3>
               <div className="text-3xl font-display text-purple mb-4">93%</div>
               <p className="text-white/70 text-sm">Increase in customer engagement through our data-driven approach to experience design.</p>
+              <div className="mt-4">
+                <a href="#" className="text-purple text-sm flex items-center group hover:underline">
+                  Conoce el caso
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
+                </a>
+              </div>
             </div>
             
             <div className="highlight-box">
@@ -65,6 +72,12 @@ export const ProofSection = () => {
               <h3 className="text-xl text-white mb-2">Netflix</h3>
               <div className="text-3xl font-display text-purple mb-4">87%</div>
               <p className="text-white/70 text-sm">Improvement in user retention rates after implementing our personalized recommendation engine.</p>
+              <div className="mt-4">
+                <a href="#" className="text-purple text-sm flex items-center group hover:underline">
+                  Conoce el caso
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
+                </a>
+              </div>
             </div>
             
             <div className="highlight-box">
@@ -77,19 +90,13 @@ export const ProofSection = () => {
               <h3 className="text-xl text-white mb-2">Airbnb</h3>
               <div className="text-3xl font-display text-purple mb-4">78%</div>
               <p className="text-white/70 text-sm">Growth in marketplace activity through our comprehensive UX redesign and data strategy.</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="mt-24 text-center">
-          <h3 className="text-lg md:text-2xl text-white mb-6">CREATE YOUR OWN <span className="text-purple">SUCCESS STORY</span> WITH US</h3>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 md:gap-4 mt-10">
-            {Array.from({ length: 7 }).map((_, i) => (
-              <div key={i} className="border border-white/10 rounded-lg p-3 bg-white/5 hover:bg-white/10 transition-colors">
-                <div className="text-xs text-white/60 font-mono">CLIENT_{i+1}</div>
+              <div className="mt-4">
+                <a href="#" className="text-purple text-sm flex items-center group hover:underline">
+                  Conoce el caso
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
+                </a>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>

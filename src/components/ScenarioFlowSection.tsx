@@ -2,6 +2,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from "@/components/ui/carousel";
 
 const scenarios = [
   {
@@ -44,7 +51,6 @@ const scenarios = [
 
 export const ScenarioFlowSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [activeScenario, setActiveScenario] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
 
   // Intersection Observer to trigger animations when section is in view
@@ -70,29 +76,6 @@ export const ScenarioFlowSection = () => {
     };
   }, []);
 
-  // Scroll Observer to change active scenario based on scroll position
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-
-      const sectionTop = sectionRef.current.offsetTop;
-      const sectionHeight = sectionRef.current.offsetHeight;
-      const windowScroll = window.scrollY + window.innerHeight / 2;
-      
-      // Calculate which scenario should be active based on scroll position
-      const progress = (windowScroll - sectionTop) / sectionHeight;
-      const scenarioIndex = Math.min(
-        Math.max(Math.floor(progress * 4) + 1, 1),
-        4
-      );
-      
-      setActiveScenario(scenarioIndex);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <section 
       id="scenarios"
@@ -104,70 +87,69 @@ export const ScenarioFlowSection = () => {
     >
       <div className="section-container">
         <h2 className="text-3xl md:text-4xl font-display text-white text-center mb-12">
-          ESCENARIOS DE DESAFÍO
+          SI UN CLIENTE NOS PIDE
         </h2>
         
-        <div className="sticky top-24 py-8 mb-16">
-          <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-16 items-stretch">
+        <Carousel className="max-w-5xl mx-auto">
+          <CarouselContent>
             {scenarios.map((scenario) => (
-              <div 
-                key={scenario.id}
-                className={cn(
-                  "border-l-2 border-white/10 pl-4 py-2 transition-all duration-500",
-                  activeScenario === scenario.id ? "border-l-accent" : ""
-                )}
-              >
-                <span className={cn(
-                  "text-lg font-display text-white/50 transition-colors duration-300",
-                  activeScenario === scenario.id ? "text-white" : ""
-                )}>
-                  ESCENARIO {scenario.id}
-                </span>
-              </div>
+              <CarouselItem key={scenario.id} className="md:basis-full lg:basis-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Standard Scenario */}
+                  <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
+                    <div className="mb-4 chip bg-primary/10 text-primary">DESAFÍO ESTÁNDAR</div>
+                    <p className="text-white text-xl font-medium mb-6">{scenario.challenge}</p>
+                    <div className="mt-auto">
+                      <div className="flex items-center justify-between">
+                        <ArrowRight className="text-primary animate-pulse flow-arrow" size={24} />
+                        <span className={cn("text-lg font-mono px-4 py-1 rounded-full", scenario.destinationColor)}>
+                          {scenario.destination}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Alternative Complex Scenario */}
+                  <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
+                    <div className="mb-4 chip bg-accent/10 text-accent">DESAFÍO COMPLEJO</div>
+                    <p className="text-white text-xl font-medium mb-6">{scenario.alternativeChallenge}</p>
+                    <div className="mt-auto">
+                      <div className="flex items-center justify-between">
+                        <ArrowRight className="text-accent animate-pulse flow-arrow" size={24} />
+                        <span className={cn("text-lg font-mono px-4 py-1 rounded-full", scenario.alternativeColor)}>
+                          {scenario.alternativeDestination}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
             ))}
-          </div>
-        </div>
-        
-        <div className="space-y-64 md:space-y-96 pb-24">
-          {scenarios.map((scenario) => (
-            <div 
-              key={scenario.id} 
-              id={`scenario-${scenario.id}`}
-              className={cn(
-                "grid grid-cols-1 md:grid-cols-2 gap-8 transition-opacity duration-1000",
-                activeScenario === scenario.id ? "opacity-100" : "opacity-30"
-              )}
-            >
-              {/* Standard Scenario */}
-              <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
-                <div className="mb-4 chip bg-primary/10 text-primary">DESAFÍO ESTÁNDAR</div>
-                <p className="text-white text-xl font-medium mb-6">{scenario.challenge}</p>
-                <div className="mt-auto">
-                  <div className="flex items-center justify-between">
-                    <ArrowRight className="text-primary animate-pulse" size={24} />
-                    <span className={cn("text-lg font-mono px-4 py-1 rounded-full", scenario.destinationColor)}>
-                      {scenario.destination}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Alternative Complex Scenario */}
-              <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
-                <div className="mb-4 chip bg-accent/10 text-accent">DESAFÍO COMPLEJO</div>
-                <p className="text-white text-xl font-medium mb-6">{scenario.alternativeChallenge}</p>
-                <div className="mt-auto">
-                  <div className="flex items-center justify-between">
-                    <ArrowRight className="text-accent animate-pulse" size={24} />
-                    <span className={cn("text-lg font-mono px-4 py-1 rounded-full", scenario.alternativeColor)}>
-                      {scenario.alternativeDestination}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+          </CarouselContent>
+          <CarouselPrevious className="absolute left-0 border-white/20 bg-dark/50 backdrop-blur-sm hover:bg-dark/80" />
+          <CarouselNext className="absolute right-0 border-white/20 bg-dark/50 backdrop-blur-sm hover:bg-dark/80" />
+        </Carousel>
+
+        <style jsx global>{`
+          .flow-arrow {
+            position: relative;
+          }
+          .flow-arrow::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            height: 2px;
+            width: 0;
+            background: currentColor;
+            transition: width 0.4s ease;
+            animation: flowLine 1.5s infinite alternate;
+          }
+          @keyframes flowLine {
+            0% { width: 0; }
+            100% { width: 100px; }
+          }
+        `}</style>
       </div>
     </section>
   );

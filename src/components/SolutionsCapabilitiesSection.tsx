@@ -89,9 +89,12 @@ export const SolutionsCapabilitiesSection = () => {
       className={`py-24 min-h-screen bg-dark transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
     >
       <div className="section-container">
-        <h2 className="text-3xl md:text-4xl font-display text-white text-center mb-16">
-          SOLUCIONES Y CAPACIDADES
-        </h2>
+        <div className="text-center mb-24">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white leading-tight max-w-5xl mx-auto">
+            <span className="text-accent">NUESTRAS CAPACIDADES</span> SE INTEGRAN EN CADA PRÁCTICA PARA <span className="text-primary">OFRECER SOLUCIONES</span> A NUESTROS CLIENTES
+          </h2>
+          <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
+        </div>
         
         <div className="relative w-full aspect-square max-w-3xl mx-auto">
           {/* Center circle - represents the core */}
@@ -122,7 +125,7 @@ export const SolutionsCapabilitiesSection = () => {
                 {/* Subsets for each practice area - shown when hovered */}
                 {hoveredPractice === practice.id && (
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-dark/90 rounded-lg p-3 w-48 z-30 border border-white/10">
-                    <div className="text-white text-xs mb-2 font-bold">{practice.name}</div>
+                    <div className="text-white text-xs mb-2 font-bold">SOLUCIONES</div>
                     <ul className="text-white/80 text-xs space-y-1">
                       {practice.subsets.map((subset, i) => (
                         <li key={i} className="flex items-center">
