@@ -30,14 +30,8 @@ const resources = [
     icon: "🛠️",
     color: "from-coral-light/20 to-coral-light/5",
     textColor: "text-coral-light"
-  },
-  {
-    title: "Novedades",
-    description: "Mejoras de servicio, Estudios, o proyectos en proceso de desarrollo",
-    icon: "🔔",
-    color: "from-cream/20 to-cream/5",
-    textColor: "text-cream"
   }
+  // Removed "Novedades" card
 ];
 
 export const ResourcesSection = () => {
@@ -80,7 +74,7 @@ export const ResourcesSection = () => {
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {resources.map((resource, index) => (
             <div 
               key={index}

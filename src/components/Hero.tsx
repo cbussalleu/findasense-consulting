@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 
@@ -109,11 +108,9 @@ export const Hero = () => {
           </h1>
           
           <div className="mb-12">
-            <a href="#solutions" className="relative inline-flex items-center justify-center px-6 py-3 rounded-full bg-accent hover:bg-accent/90 text-white font-medium overflow-hidden group transition-all duration-300 shadow-lg shadow-accent/25">
-              <span className="relative z-10 flex items-center">
-                APRENDE MÁS DE CONSULTING 
-                <ArrowRight className="ml-2 transition-transform duration-500 group-hover:translate-x-1" size={18} />
-              </span>
+            <a href="#solutions" className="text-accent hover:text-accent-light font-medium transition-colors duration-300 flex items-center group">
+              <span>APRENDE MÁS DE CONSULTING</span>
+              <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={18} />
             </a>
           </div>
         </div>

@@ -34,7 +34,7 @@ export const ConsultingCapability = ({
 
   // Initial position: horizontal line below legend
   const initialX = getHorizontalPosition(index, totalItems);
-  const initialY = isMobile ? 40 : 50; // Distance below the legend
+  const initialY = isMobile ? 80 : 100; // Increased distance below the legend
   
   // When a practice is hovered, animate to that practice
   let finalX = initialX;
