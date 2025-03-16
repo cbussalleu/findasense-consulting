@@ -90,18 +90,20 @@ export const SolutionsCapabilitiesSection = () => {
     >
       <div className="section-container">
         <div className="text-center mb-24">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white leading-tight max-w-5xl mx-auto">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white leading-tight max-w-5xl mx-auto uppercase">
             <span className="text-accent">NUESTRAS CAPACIDADES</span> SE INTEGRAN EN CADA PRÁCTICA PARA <span className="text-primary">OFRECER SOLUCIONES</span> A NUESTROS CLIENTES
           </h2>
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
-        <div className="relative w-full aspect-square max-w-3xl mx-auto">
-          {/* Center circle - represents the core */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-secondary rounded-full flex items-center justify-center z-10 border-2 border-white/10">
-            <span className="text-white font-display">FINDASENSE</span>
+        {/* Legend for Consulting Capabilities */}
+        <div className="text-center mb-12">
+          <div className="bg-accent/10 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono">
+            <span>Capacidades Consulting</span>
           </div>
-          
+        </div>
+        
+        <div className="relative w-full aspect-square max-w-3xl mx-auto">
           {/* Practice Areas - positioned in a circle */}
           {practiceAreas.map((practice, index) => {
             const angle = getDistributionAngle(index, practiceAreas.length);
@@ -110,12 +112,14 @@ export const SolutionsCapabilitiesSection = () => {
             return (
               <motion.div
                 key={practice.id}
-                className={`absolute w-24 h-24 ${practice.color} rounded-full flex items-center justify-center cursor-pointer z-20`}
+                className={`absolute w-24 h-24 ${practice.color} rounded-full flex items-center justify-center cursor-pointer`}
                 style={{
                   top: `calc(50% + ${y}px)`,
                   left: `calc(50% + ${x}px)`,
-                  transform: "translate(-50%, -50%)"
+                  transform: "translate(-50%, -50%)",
+                  zIndex: hoveredPractice === practice.id ? 30 : 20
                 }}
+                initial={{ scale: 1 }}
                 whileHover={{ scale: 1.1 }}
                 onMouseEnter={() => setHoveredPractice(practice.id)}
                 onMouseLeave={() => setHoveredPractice(null)}
@@ -124,7 +128,10 @@ export const SolutionsCapabilitiesSection = () => {
                 
                 {/* Subsets for each practice area - shown when hovered */}
                 {hoveredPractice === practice.id && (
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-dark/90 rounded-lg p-3 w-48 z-30 border border-white/10">
+                  <div 
+                    className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-dark/90 rounded-lg p-3 w-48 border border-white/10"
+                    style={{ zIndex: 50 }}
+                  >
                     <div className="text-white text-xs mb-2 font-bold">SOLUCIONES</div>
                     <ul className="text-white/80 text-xs space-y-1">
                       {practice.subsets.map((subset, i) => (
@@ -173,7 +180,8 @@ export const SolutionsCapabilitiesSection = () => {
                 style={{
                   top: `calc(50% + ${basePos.y}px)`,
                   left: `calc(50% + ${basePos.x}px)`,
-                  transform: "translate(-50%, -50%)"
+                  transform: "translate(-50%, -50%)",
+                  zIndex: 10
                 }}
                 animate={{
                   top: `calc(50% + ${finalY}px)`,
@@ -185,12 +193,6 @@ export const SolutionsCapabilitiesSection = () => {
               </motion.div>
             );
           })}
-        </div>
-        
-        <div className="text-center mt-16 text-white/70">
-          <p className="max-w-2xl mx-auto">
-            Hover sobre cada área de práctica para ver cómo las capacidades de Consulting interactúan con las soluciones específicas de cada especialidad.
-          </p>
         </div>
       </div>
     </section>

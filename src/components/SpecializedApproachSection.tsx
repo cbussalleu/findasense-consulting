@@ -33,7 +33,7 @@ export const SpecializedApproachSection = () => {
       className="py-24 bg-dark opacity-0 transition-opacity duration-1000"
     >
       <div className="section-container">
-        <h2 className="text-3xl md:text-4xl font-display text-white text-center mb-16">
+        <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white text-center mb-16 uppercase">
           ¿Cuándo se requiere un enfoque integral y especializado?
         </h2>
         

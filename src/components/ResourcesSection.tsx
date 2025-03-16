@@ -74,7 +74,7 @@ export const ResourcesSection = () => {
     >
       <div className="section-container">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-display text-white">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white uppercase">
             CENTRO DE RECURSOS DE CONSULTING
           </h2>
         </div>

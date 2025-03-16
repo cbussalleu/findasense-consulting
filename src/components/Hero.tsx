@@ -109,7 +109,7 @@ export const Hero = () => {
           </h1>
           
           <div className="mb-12 opacity-0 animate-fade-in" style={{ animationDelay: '1.5s', animationFillMode: 'forwards' }}>
-            <a href="#services" className="button-primary group">
+            <a href="#services" className="button-primary">
               <span className="flex items-center">
                 APRENDE MÁS DE CONSULTING 
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={18} />

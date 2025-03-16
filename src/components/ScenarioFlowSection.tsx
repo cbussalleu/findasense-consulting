@@ -86,7 +86,7 @@ export const ScenarioFlowSection = () => {
       )}
     >
       <div className="section-container">
-        <h2 className="text-3xl md:text-4xl font-display text-white text-center mb-12">
+        <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white text-center mb-12 uppercase">
           SI UN CLIENTE NOS PIDE
         </h2>
         
@@ -130,7 +130,7 @@ export const ScenarioFlowSection = () => {
           <CarouselNext className="absolute right-0 border-white/20 bg-dark/50 backdrop-blur-sm hover:bg-dark/80" />
         </Carousel>
 
-        {/* Fix: Using a style tag without jsx and global props */}
+        {/* Flow arrow animation */}
         <style dangerouslySetInnerHTML={{ __html: `
           .flow-arrow {
             position: relative;

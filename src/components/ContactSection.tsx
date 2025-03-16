@@ -35,24 +35,17 @@ export const ContactSection = () => {
     >
       <div className="section-container text-center">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-6">
-            <div className="chip bg-coral/20 text-coral mb-5">
-              <ArrowRight size={12} className="inline mr-1" />
-              <span>LET'S TALK</span>
-            </div>
-          </div>
-          
-          <h2 className="text-3xl md:text-5xl font-display text-white mb-8">
-            Ready to transform your customer experience?
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white mb-8 uppercase">
+            ¿Tienes alguna idea para mejorar Findasense?
           </h2>
           
           <div className="flex justify-center">
             <a 
               href="mailto:consulting@findasense.com" 
-              className="button-primary group text-lg"
+              className="button-primary group"
             >
               <span className="flex items-center">
-                Contact Us
+                Ideemos juntos
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={18} />
               </span>
             </a>
