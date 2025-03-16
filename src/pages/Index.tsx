@@ -3,7 +3,7 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { SpecializedApproachSection } from "@/components/SpecializedApproachSection";
 import { ScenarioFlowSection } from "@/components/ScenarioFlowSection";
-import { SolutionsCapabilitiesSection } from "@/components/SolutionsCapabilitiesSection";
+import { SolutionsCapabilitiesSection } from "@/components/solutions/SolutionsCapabilitiesSection";
 import { ProofSection } from "@/components/ProofSection";
 import { ResourcesSection } from "@/components/ResourcesSection";
 import { FAQSection } from "@/components/FAQSection";
