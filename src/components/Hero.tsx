@@ -109,7 +109,7 @@ export const Hero = () => {
           </h1>
           
           <div className="mb-12">
-            <a href="#solutions" className="text-accent hover:text-accent-light font-medium transition-colors duration-300 flex items-center group">
+            <a href="#approach" className="text-accent hover:text-accent-light font-medium transition-colors duration-300 flex items-center group">
               <span>Aprende más de Consulting</span>
               <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={18} />
             </a>

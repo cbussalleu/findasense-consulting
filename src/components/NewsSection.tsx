@@ -1,6 +1,6 @@
 
 import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, ChevronUp, Calendar, Clock } from 'lucide-react';
+import { ChevronDown, ChevronUp, Calendar, ArrowRight } from 'lucide-react';
 import { 
   Collapsible,
   CollapsibleContent,
@@ -107,7 +107,7 @@ export const NewsSection = () => {
       <div className="section-container">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white uppercase">
-            NOVEDADES
+            ÚLTIMAS NOVEDADES
           </h2>
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
@@ -144,6 +144,13 @@ export const NewsSection = () => {
               <CollapsibleContent className="px-4 pb-4 pt-1 text-white/80 animation-accordion-down">
                 <div className="pl-16 pr-4 border-l border-white/10 ml-8">
                   <p>{item.description}</p>
+                  
+                  <div className="mt-4">
+                    <button className="text-accent text-sm flex items-center group">
+                      <span>Conoce más</span>
+                      <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
+                    </button>
+                  </div>
                 </div>
               </CollapsibleContent>
             </Collapsible>

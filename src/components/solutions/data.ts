@@ -4,31 +4,31 @@ export const practiceAreas = [
     id: "intelligence",
     name: "Intelligence",
     color: "bg-primary",
-    subsets: ["Social Listening", "Data Governance", "Benchmarking", "Data Visualization"]
+    subsets: ["CX Innovation through VoC"]
   },
   {
     id: "strategy",
     name: "Strategy",
     color: "bg-accent",
-    subsets: ["Consumer Trends Reporting", "Consumer Understanding", "BX Strategy", "Brand Perception Studies"]
+    subsets: ["CX Processes Design", "CX Assessment"]
   },
   {
     id: "content",
     name: "Creativity & Content",
     color: "bg-coral-light",
-    subsets: ["Creative Campaigns", "Content Production", "Personalized Content Creation", "Events Coverage"]
+    subsets: ["Scalable Content Production System"]
   },
   {
     id: "engagement",
     name: "Engagement & Care",
     color: "bg-purple-light",
-    subsets: ["Customer Care", "Community Management", "Omni-channel Management", "Reputation Management"]
+    subsets: ["Knowledge Base Implementation"]
   },
   {
     id: "platforms",
     name: "Platforms",
     color: "bg-cream text-dark",
-    subsets: ["UX/UI Audits & Design", "Tech & Platforms Integration", "Loyalty Systems"]
+    subsets: ["Service Design", "End-User Training on CX Digital Platforms"]
   }
 ];
 

@@ -1,6 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -26,12 +28,31 @@ export const Navbar = () => {
         isScrolled ? "bg-secondary/90 backdrop-blur-md py-3" : "bg-transparent"
       )}
     >
-      <div className="section-container flex items-center justify-between">
-        <a href="/" className="flex items-center">
+      <div className="section-container flex items-center justify-between relative">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className={cn(
+            "absolute inset-0 border-2 border-primary rounded-lg -z-10 transition-all duration-300",
+            isScrolled ? "top-auto h-1 bottom-0 rounded-none" : "rounded-lg"
+          )}
+        />
+        
+        <a 
+          href="/" 
+          className={cn(
+            "flex items-center transition-all duration-300",
+            isScrolled ? "ml-auto mr-auto" : ""
+          )}
+        >
           <span className="text-xl font-display tracking-tighter text-white">WE ARE FAS CONSULTING</span>
         </a>
 
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className={cn(
+          "hidden md:flex items-center space-x-8",
+          isScrolled ? "absolute right-8" : ""
+        )}>
           <a href="#services" className="nav-link">Soluciones</a>
           <a href="#about" className="nav-link">Casos</a>
           <a href="#work" className="nav-link">Recursos</a>
@@ -42,7 +63,10 @@ export const Navbar = () => {
 
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden text-white"
+          className={cn(
+            "md:hidden text-white",
+            isScrolled ? "absolute right-4" : ""
+          )}
           aria-label="Toggle menu"
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}

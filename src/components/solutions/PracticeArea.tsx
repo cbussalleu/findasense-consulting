@@ -1,6 +1,7 @@
+
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useState } from 'react';
+import { ArrowRight } from 'lucide-react';
 
 interface PracticeAreaProps {
   practice: {
@@ -122,6 +123,12 @@ export const PracticeArea = ({
               </li>
             ))}
           </ul>
+          <div className="mt-3 pt-2 border-t border-white/10">
+            <button className="text-accent text-xs flex items-center justify-center w-full group">
+              <span>Cómo funciona</span>
+              <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
         </div>
       )}
     </motion.div>
