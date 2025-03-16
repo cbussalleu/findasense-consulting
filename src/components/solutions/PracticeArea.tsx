@@ -54,11 +54,7 @@ export const PracticeArea = ({
 
   const handleClick = () => {
     // Toggle the current practice or close all if this one was already active
-    if (hoveredPractice === practice.id) {
-      setHoveredPractice(null);
-    } else {
-      setHoveredPractice(practice.id);
-    }
+    setHoveredPractice(hoveredPractice === practice.id ? null : practice.id);
   };
 
   const handleMouseEnter = () => {

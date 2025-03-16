@@ -125,9 +125,8 @@ export const ScenarioFlowSection = () => {
                   {/* Standard Scenario */}
                   <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
                     <div className="mb-4 chip bg-primary/10 text-primary">DESAFÍO ESTÁNDAR</div>
-                    <p className="text-white text-xl font-medium mb-6 relative">
+                    <p className="text-white text-xl font-medium mb-6">
                       {scenario.challenge}
-                      <span className={`connection-line ${activeSlide === index ? 'active' : ''}`}></span>
                     </p>
                     <div className="mt-auto">
                       <div className="flex items-center justify-between">
@@ -142,9 +141,8 @@ export const ScenarioFlowSection = () => {
                   {/* Alternative Complex Scenario */}
                   <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
                     <div className="mb-4 chip bg-accent/10 text-accent">DESAFÍO COMPLEJO</div>
-                    <p className="text-white text-xl font-medium mb-6 relative">
+                    <p className="text-white text-xl font-medium mb-6">
                       {scenario.alternativeChallenge}
-                      <span className={`connection-line accent ${activeSlide === index ? 'active' : ''}`}></span>
                     </p>
                     <div className="mt-auto">
                       <div className="flex items-center justify-between">
@@ -168,17 +166,6 @@ export const ScenarioFlowSection = () => {
         </Carousel>
 
         <style dangerouslySetInnerHTML={{ __html: `
-          .connection-line {
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: currentColor;
-            transition: width 1.5s ease-in-out;
-            display: none;
-          }
-          
           .flow-arrow {
             transition: transform 1s ease, opacity 0.5s ease;
             opacity: 0.5;

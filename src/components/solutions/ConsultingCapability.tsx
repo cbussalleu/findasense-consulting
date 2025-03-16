@@ -28,13 +28,13 @@ export const ConsultingCapability = ({
   const getHorizontalPosition = (index: number, total: number) => {
     // Distribute capabilities horizontally in a line below the legend
     const width = isMobile ? 300 : 600; // Total width of the line
-    const step = width / (total + 1); // Space between each capability
-    return (index + 1) * step - width / 2; // Center the line
+    const step = width / (total - 1 || 1); // Space between each capability
+    return index * step - width / 2; // Center the line
   };
 
   // Initial position: horizontal line below legend
   const initialX = getHorizontalPosition(index, totalItems);
-  const initialY = isMobile ? 50 : 80; // Distance below the legend
+  const initialY = isMobile ? 40 : 50; // Distance below the legend
   
   // When a practice is hovered, animate to that practice
   let finalX = initialX;
