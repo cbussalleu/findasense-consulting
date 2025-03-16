@@ -9,6 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious
 } from "@/components/ui/carousel";
+import type { CarouselApi } from "@/components/ui/carousel";
 
 const scenarios = [
   {
@@ -53,6 +54,25 @@ export const ScenarioFlowSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [api, setApi] = useState<CarouselApi | null>(null);
+
+  // Set up the carousel API and handle slide changes
+  useEffect(() => {
+    if (!api) return;
+    
+    const onSelect = () => {
+      setActiveSlide(api.selectedScrollSnap());
+    };
+    
+    api.on("select", onSelect);
+    
+    // Call once to set initial slide
+    onSelect();
+    
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
   // Intersection Observer to trigger animations when section is in view
   useEffect(() => {
@@ -96,10 +116,7 @@ export const ScenarioFlowSection = () => {
           opts={{
             align: "center"
           }}
-          onSelect={(api) => {
-            // Get the current selected slide index from the API
-            setActiveSlide(api.selectedScrollSnap());
-          }}
+          setApi={setApi}
         >
           <CarouselContent>
             {scenarios.map((scenario, index) => (
