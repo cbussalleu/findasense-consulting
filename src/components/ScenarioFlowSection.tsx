@@ -130,7 +130,8 @@ export const ScenarioFlowSection = () => {
           <CarouselNext className="absolute right-0 border-white/20 bg-dark/50 backdrop-blur-sm hover:bg-dark/80" />
         </Carousel>
 
-        <style jsx global>{`
+        {/* Fix: Using a style tag without jsx and global props */}
+        <style dangerouslySetInnerHTML={{ __html: `
           .flow-arrow {
             position: relative;
           }
@@ -149,7 +150,7 @@ export const ScenarioFlowSection = () => {
             0% { width: 0; }
             100% { width: 100px; }
           }
-        `}</style>
+        `}} />
       </div>
     </section>
   );
