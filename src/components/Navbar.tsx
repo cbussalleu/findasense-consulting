@@ -29,24 +29,23 @@ export const Navbar = () => {
       )}
     >
       <div className="section-container flex items-center justify-between relative">
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className={cn(
-            "absolute inset-0 border-2 border-primary rounded-lg -z-10 transition-all duration-300",
-            isScrolled ? "top-auto h-1 bottom-0 rounded-none" : "rounded-lg"
-          )}
-        />
-        
         <a 
           href="/" 
           className={cn(
-            "flex items-center transition-all duration-300",
+            "flex items-center transition-all duration-300 relative",
             isScrolled ? "ml-auto mr-auto" : ""
           )}
         >
           <span className="text-xl font-display tracking-tighter text-white">WE ARE FAS CONSULTING</span>
+          <motion.div 
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: '100%', opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className={cn(
+              "absolute bottom-[-5px] left-0 h-[2px] bg-primary transition-all duration-300",
+              isScrolled ? "transform translate-x-0" : ""
+            )}
+          />
         </a>
 
         <nav className={cn(
