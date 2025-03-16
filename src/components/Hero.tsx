@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 
@@ -109,13 +108,12 @@ export const Hero = () => {
           </h1>
           
           <div className="mb-12">
-            <a href="#solutions" className="button-primary relative inline-flex items-center justify-center px-6 py-3 rounded-md bg-accent text-white font-medium overflow-hidden group">
+            <a href="#solutions" className="relative inline-flex items-center justify-center px-6 py-3 rounded-md bg-accent text-white font-medium overflow-hidden group">
               <span className="relative z-10 flex items-center">
                 APRENDE MÁS DE CONSULTING 
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={18} />
+                <ArrowRight className="ml-2 transition-transform duration-500 group-hover:translate-x-1" size={18} />
               </span>
-              <span className="absolute inset-0 bg-accent z-0 before:absolute before:inset-0 before:bg-accent-light before:scale-x-0 before:origin-left before:transition-transform before:duration-500 group-hover:before:scale-x-100"></span>
-              <span className="absolute -inset-x-2 bottom-0 h-[2px] bg-accent-light/50 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-accent-light/40 transform origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></span>
             </a>
           </div>
         </div>

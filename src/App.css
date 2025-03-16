@@ -95,3 +95,19 @@
 .btn-underline-hover:hover::after {
   width: 100%;
 }
+
+/* Connection line animation for scenario cards */
+.first-letter-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: width 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.first-letter-highlight.active::after {
+  width: 100%;
+}

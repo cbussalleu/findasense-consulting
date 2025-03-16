@@ -35,32 +35,32 @@ export const ConsultingCapability = ({
     return { x, y };
   };
 
-  const angle = getDistributionAngle(index, totalItems);
+  // Use a larger radius to position capabilities outside the practice circles
+  const calculatedAngle = getDistributionAngle(index, totalItems);
+  const outerRadius = isMobile ? 170 : 240;
+  const outerPos = getPosition(calculatedAngle, outerRadius);
   
-  // Use dynamic radius based on screen size for capabilities positioning
-  const baseRadius = isMobile ? 100 : 140;
+  // If no practice is hovered, position capabilities in an outer circle
+  let initialX = outerPos.x;
+  let initialY = outerPos.y;
   
-  // Calculate base position - initially positioned at the top in a horizontal row
-  const basePos = { 
-    x: ((index - totalItems / 2) * 100) + 50,
-    y: -120
-  };
-  
-  // Adjust position if a practice is hovered
-  let finalX = basePos.x;
-  let finalY = basePos.y;
+  // When a practice is hovered, animate to that practice
+  let finalX = initialX;
+  let finalY = initialY;
   
   if (hoveredPractice) {
-    // Find the hovered practice's angle
+    // Find the hovered practice's position
     const hoveredIndex = practiceAreas.findIndex(p => p.id === hoveredPractice);
     if (hoveredIndex !== -1) {
       const practiceAngle = getDistributionAngle(hoveredIndex, practiceAreas.length);
-      const practicePos = getPosition(practiceAngle, isMobile ? 100 : 130);
+      const practiceRadius = isMobile ? 90 : 170;
+      const practicePos = getPosition(practiceAngle, practiceRadius);
       
       // Calculate orbit position around the hovered practice
+      const orbitRadius = isMobile ? 80 : 100;
       const orbitAngle = getDistributionAngle(index, totalItems);
-      const orbitX = Math.cos((orbitAngle * Math.PI) / 180) * (isMobile ? 60 : 80);
-      const orbitY = Math.sin((orbitAngle * Math.PI) / 180) * (isMobile ? 60 : 80);
+      const orbitX = Math.cos((orbitAngle * Math.PI) / 180) * orbitRadius;
+      const orbitY = Math.sin((orbitAngle * Math.PI) / 180) * orbitRadius;
       
       // Position capability to orbit around the hovered practice
       finalX = practicePos.x + orbitX;
@@ -70,10 +70,10 @@ export const ConsultingCapability = ({
 
   return (
     <motion.div
-      className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer z-10 border border-accent/20"
+      className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer z-10 border border-accent/20 capability-tag"
       style={{
-        top: `calc(50% + ${basePos.y}px)`,
-        left: `calc(50% + ${basePos.x}px)`,
+        top: `calc(50% + ${initialY}px)`,
+        left: `calc(50% + ${initialX}px)`,
         transform: "translate(-50%, -50%)",
       }}
       animate={{

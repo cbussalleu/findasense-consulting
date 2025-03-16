@@ -1,6 +1,7 @@
 
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useState } from 'react';
 
 interface PracticeAreaProps {
   practice: {
@@ -23,6 +24,7 @@ export const PracticeArea = ({
   setHoveredPractice 
 }: PracticeAreaProps) => {
   const isMobile = useIsMobile();
+  const [showDetails, setShowDetails] = useState(false);
   
   const getDistributionAngle = (index: number, total: number) => {
     const angleStep = 360 / total;
@@ -36,7 +38,6 @@ export const PracticeArea = ({
   };
 
   // Calculate base radius dynamically based on screen width
-  // This ensures the circles are properly centered and sized
   const getResponsiveRadius = () => {
     if (isMobile) return 90;
     const width = typeof window !== 'undefined' ? window.innerWidth : 1024;
@@ -50,10 +51,33 @@ export const PracticeArea = ({
   const radius = getResponsiveRadius();
   const { x, y } = getPosition(angle, radius);
 
+  const handleClick = () => {
+    if (hoveredPractice === practice.id) {
+      setHoveredPractice(null);
+      setShowDetails(false);
+    } else {
+      setHoveredPractice(practice.id);
+      setShowDetails(!showDetails);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (!isMobile) {
+      setHoveredPractice(practice.id);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isMobile) {
+      setHoveredPractice(null);
+      setShowDetails(false);
+    }
+  };
+
   return (
     <motion.div
       key={practice.id}
-      className={`absolute w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 ${practice.color} rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-300`}
+      className={`absolute w-20 h-20 sm:w-22 sm:h-22 md:w-24 md:h-24 ${practice.color} rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-300`}
       style={{
         top: `calc(50% + ${y}px)`,
         left: `calc(50% + ${x}px)`,
@@ -66,13 +90,9 @@ export const PracticeArea = ({
         boxShadow: hoveredPractice === practice.id ? "0 10px 25px rgba(0,0,0,0.3)" : "0 4px 12px rgba(0,0,0,0.2)"
       }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      onMouseEnter={() => setHoveredPractice(practice.id)}
-      onMouseLeave={() => setHoveredPractice(null)}
-      onClick={() => {
-        if (isMobile) {
-          setHoveredPractice(hoveredPractice === practice.id ? null : practice.id);
-        }
-      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
       <span className="text-xs sm:text-sm font-medium text-center px-1">{practice.name}</span>
       
@@ -90,8 +110,8 @@ export const PracticeArea = ({
         }}
       />
       
-      {/* Subsets for each practice area - shown when hovered */}
-      {hoveredPractice === practice.id && (
+      {/* Subsets for each practice area - shown only on click */}
+      {showDetails && (
         <div 
           className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-dark/90 rounded-lg p-3 w-48 border border-white/10 z-50"
         >

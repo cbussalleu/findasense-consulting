@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -23,10 +22,10 @@ const scenarios = [
   {
     id: 2,
     challenge: "Implementar y analizar NPS y voz de consumidor",
-    destination: "Intelligence + Strategy",
+    destination: "Intelligence",
     destinationColor: "bg-primary/10 text-primary",
     alternativeChallenge: "Implementar un flujo de innovación continua a partir del programa de voz de consumidor",
-    alternativeDestination: "Consulting + Strategy + Intelligence",
+    alternativeDestination: "Consulting + Intelligence",
     alternativeColor: "bg-accent/10 text-accent"
   },
   {
@@ -52,6 +51,7 @@ const scenarios = [
 export const ScenarioFlowSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   // Intersection Observer to trigger animations when section is in view
   useEffect(() => {
@@ -90,24 +90,28 @@ export const ScenarioFlowSection = () => {
           SI UN CLIENTE NOS PIDE
         </h2>
         
-        <Carousel className="max-w-5xl mx-auto">
+        <Carousel 
+          className="max-w-5xl mx-auto"
+          onSelect={(index) => setActiveSlide(index)}
+        >
           <CarouselContent>
-            {scenarios.map((scenario) => (
+            {scenarios.map((scenario, index) => (
               <CarouselItem key={scenario.id} className="md:basis-full lg:basis-full">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Standard Scenario */}
                   <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
                     <div className="mb-4 chip bg-primary/10 text-primary">DESAFÍO ESTÁNDAR</div>
-                    <p className="text-white text-xl font-medium mb-6">
-                      <span className="relative">
-                        {scenario.challenge.charAt(0)}
-                        <span className="absolute bottom-0 left-1 w-full h-0.5 bg-primary origin-left transform transition-all duration-1000 scenario-line"></span>
-                      </span>
-                      {scenario.challenge.substring(1)}
+                    <p className="text-white text-xl font-medium mb-6 relative">
+                      {scenario.challenge.split('').map((char, i) => (
+                        <span key={i} className={i === 0 ? "text-primary first-letter-highlight" : ""}>
+                          {char}
+                        </span>
+                      ))}
+                      <span className={`connection-line ${activeSlide === index ? 'active' : ''}`}></span>
                     </p>
                     <div className="mt-auto">
                       <div className="flex items-center justify-between">
-                        <ArrowRight className="text-primary flow-arrow" size={24} />
+                        <ArrowRight className={`text-primary flow-arrow ${activeSlide === index ? 'active' : ''}`} size={24} />
                         <span className={cn("text-lg font-mono px-4 py-1 rounded-full", scenario.destinationColor)}>
                           {scenario.destination}
                         </span>
@@ -118,16 +122,17 @@ export const ScenarioFlowSection = () => {
                   {/* Alternative Complex Scenario */}
                   <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
                     <div className="mb-4 chip bg-accent/10 text-accent">DESAFÍO COMPLEJO</div>
-                    <p className="text-white text-xl font-medium mb-6">
-                      <span className="relative">
-                        {scenario.alternativeChallenge.charAt(0)}
-                        <span className="absolute bottom-0 left-1 w-full h-0.5 bg-accent origin-left transform transition-all duration-1000 scenario-line"></span>
-                      </span>
-                      {scenario.alternativeChallenge.substring(1)}
+                    <p className="text-white text-xl font-medium mb-6 relative">
+                      {scenario.alternativeChallenge.split('').map((char, i) => (
+                        <span key={i} className={i === 0 ? "text-accent first-letter-highlight" : ""}>
+                          {char}
+                        </span>
+                      ))}
+                      <span className={`connection-line accent ${activeSlide === index ? 'active' : ''}`}></span>
                     </p>
                     <div className="mt-auto">
                       <div className="flex items-center justify-between">
-                        <ArrowRight className="text-accent flow-arrow" size={24} />
+                        <ArrowRight className={`text-accent flow-arrow ${activeSlide === index ? 'active' : ''}`} size={24} />
                         <span className={cn("text-lg font-mono px-4 py-1 rounded-full", scenario.alternativeColor)}>
                           {scenario.alternativeDestination}
                         </span>
@@ -138,38 +143,45 @@ export const ScenarioFlowSection = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute left-0 border-white/20 bg-dark/50 backdrop-blur-sm hover:bg-dark/80">
+          <CarouselPrevious className="absolute left-0 border-white/10 bg-dark/30 backdrop-blur-sm hover:bg-dark/50 transition-all duration-300">
             <ChevronLeft className="h-4 w-4 text-white/70" />
           </CarouselPrevious>
-          <CarouselNext className="absolute right-0 border-white/20 bg-dark/50 backdrop-blur-sm hover:bg-dark/80">
+          <CarouselNext className="absolute right-0 border-white/10 bg-dark/30 backdrop-blur-sm hover:bg-dark/50 transition-all duration-300">
             <ChevronRight className="h-4 w-4 text-white/70" />
           </CarouselNext>
         </Carousel>
 
-        {/* Flow arrow animation */}
         <style dangerouslySetInnerHTML={{ __html: `
-          .flow-arrow {
+          .first-letter-highlight {
             position: relative;
-            animation: pulse 2s infinite alternate;
           }
           
-          @keyframes pulse {
-            0% { opacity: 0.7; transform: translateX(0); }
-            100% { opacity: 1; transform: translateX(5px); }
+          .connection-line {
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: currentColor;
+            transition: width 1.5s ease-in-out;
           }
           
-          .scenario-line {
-            animation: lineGrow 3s infinite alternate;
+          .connection-line.active {
+            width: 100%;
           }
           
-          @keyframes lineGrow {
-            0% { width: 0; }
-            100% { width: 100%; }
+          .connection-line.accent {
+            background: rgb(99, 102, 241);
           }
           
-          .highlight-box:hover .scenario-line {
-            animation-play-state: running;
-            animation-duration: 1.5s;
+          .flow-arrow {
+            transition: transform 1s ease, opacity 0.5s ease;
+            opacity: 0.5;
+          }
+          
+          .flow-arrow.active {
+            transform: translateX(10px);
+            opacity: 1;
           }
         `}} />
       </div>
