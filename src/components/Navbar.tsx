@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -29,7 +28,7 @@ export const Navbar = () => {
     >
       <div className="section-container flex items-center justify-between">
         <a href="/" className="flex items-center">
-          <span className="text-xl font-display tracking-tighter text-white">FAS CONSULTING</span>
+          <span className="text-xl font-display tracking-tighter text-white">WE ARE FAS CONSULTING</span>
         </a>
 
         <nav className="hidden md:flex items-center space-x-8">

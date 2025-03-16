@@ -104,7 +104,7 @@ export const SolutionsCapabilitiesSection = () => {
         </div>
         
         <div className="relative w-full aspect-square max-w-3xl mx-auto">
-          {/* Practice Areas - positioned in a circle */}
+          {/* Practice Areas - positioned in a circle with hover animation */}
           {practiceAreas.map((practice, index) => {
             const angle = getDistributionAngle(index, practiceAreas.length);
             const { x, y } = getPosition(angle, 130);
@@ -112,25 +112,42 @@ export const SolutionsCapabilitiesSection = () => {
             return (
               <motion.div
                 key={practice.id}
-                className={`absolute w-24 h-24 ${practice.color} rounded-full flex items-center justify-center cursor-pointer`}
+                className={`absolute w-24 h-24 ${practice.color} rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-300`}
                 style={{
                   top: `calc(50% + ${y}px)`,
                   left: `calc(50% + ${x}px)`,
                   transform: "translate(-50%, -50%)",
-                  zIndex: hoveredPractice === practice.id ? 30 : 20
                 }}
                 initial={{ scale: 1 }}
                 whileHover={{ scale: 1.1 }}
+                animate={{ 
+                  zIndex: hoveredPractice === practice.id ? 50 : 20,
+                  boxShadow: hoveredPractice === practice.id ? "0 10px 25px rgba(0,0,0,0.3)" : "0 4px 12px rgba(0,0,0,0.2)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 onMouseEnter={() => setHoveredPractice(practice.id)}
                 onMouseLeave={() => setHoveredPractice(null)}
               >
                 <span className="text-sm font-medium text-center px-2">{practice.name}</span>
                 
+                {/* Pulsing animation on the circles to indicate they are interactive */}
+                <motion.div 
+                  className={`absolute inset-0 rounded-full ${practice.color} opacity-30`}
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    opacity: [0.1, 0.2, 0.1]
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 2,
+                    ease: "easeInOut"
+                  }}
+                />
+                
                 {/* Subsets for each practice area - shown when hovered */}
                 {hoveredPractice === practice.id && (
                   <div 
-                    className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-dark/90 rounded-lg p-3 w-48 border border-white/10"
-                    style={{ zIndex: 50 }}
+                    className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-dark/90 rounded-lg p-3 w-48 border border-white/10 z-50"
                   >
                     <div className="text-white text-xs mb-2 font-bold">SOLUCIONES</div>
                     <ul className="text-white/80 text-xs space-y-1">
@@ -147,14 +164,16 @@ export const SolutionsCapabilitiesSection = () => {
             );
           })}
           
-          {/* Consulting capabilities - floating around */}
+          {/* Consulting capabilities - positioned responsively */}
           {consultingCapabilities.map((capability, index) => {
             const angle = getDistributionAngle(index, consultingCapabilities.length);
-            // Use a larger radius for capabilities
+            
+            // Use dynamic radius based on screen size
             const baseRadius = 200;
+            const responsiveRadius = baseRadius * (window.innerWidth < 768 ? 0.8 : 1);
             
             // Calculate base position
-            const basePos = getPosition(angle, baseRadius);
+            const basePos = getPosition(angle, responsiveRadius);
             
             // Adjust position if a practice is hovered
             let finalX = basePos.x;
@@ -176,7 +195,7 @@ export const SolutionsCapabilitiesSection = () => {
             return (
               <motion.div
                 key={capability}
-                className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono"
+                className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer"
                 style={{
                   top: `calc(50% + ${basePos.y}px)`,
                   left: `calc(50% + ${basePos.x}px)`,
@@ -186,8 +205,12 @@ export const SolutionsCapabilitiesSection = () => {
                 animate={{
                   top: `calc(50% + ${finalY}px)`,
                   left: `calc(50% + ${finalX}px)`,
+                  scale: hoveredPractice ? 1.1 : 1
                 }}
                 transition={{ type: "spring", stiffness: 100, damping: 10 }}
+                whileHover={{ scale: 1.15 }}
+                // Add a subtle pulsing animation to indicate interactivity
+                whileTap={{ scale: 0.95 }}
               >
                 {capability}
               </motion.div>

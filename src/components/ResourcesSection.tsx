@@ -77,6 +77,7 @@ export const ResourcesSection = () => {
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white uppercase">
             CENTRO DE RECURSOS DE CONSULTING
           </h2>
+          <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
