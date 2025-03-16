@@ -1,5 +1,6 @@
 
 import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface PracticeAreaProps {
   practice: {
@@ -21,6 +22,8 @@ export const PracticeArea = ({
   hoveredPractice, 
   setHoveredPractice 
 }: PracticeAreaProps) => {
+  const isMobile = useIsMobile();
+  
   const getDistributionAngle = (index: number, total: number) => {
     const angleStep = 360 / total;
     return angleStep * index;
@@ -33,12 +36,14 @@ export const PracticeArea = ({
   };
 
   const angle = getDistributionAngle(index, totalItems);
-  const { x, y } = getPosition(angle, 130);
+  // Use a smaller radius on mobile to ensure proper centering
+  const radius = isMobile ? 100 : 130;
+  const { x, y } = getPosition(angle, radius);
 
   return (
     <motion.div
       key={practice.id}
-      className={`absolute w-24 h-24 ${practice.color} rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-300`}
+      className={`absolute w-20 h-20 md:w-24 md:h-24 ${practice.color} rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-300`}
       style={{
         top: `calc(50% + ${y}px)`,
         left: `calc(50% + ${x}px)`,
@@ -53,15 +58,20 @@ export const PracticeArea = ({
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       onMouseEnter={() => setHoveredPractice(practice.id)}
       onMouseLeave={() => setHoveredPractice(null)}
+      onClick={() => {
+        if (isMobile) {
+          setHoveredPractice(hoveredPractice === practice.id ? null : practice.id);
+        }
+      }}
     >
-      <span className="text-sm font-medium text-center px-2">{practice.name}</span>
+      <span className="text-xs md:text-sm font-medium text-center px-1 md:px-2">{practice.name}</span>
       
       {/* Pulsing animation on the circles to indicate they are interactive */}
       <motion.div 
         className={`absolute inset-0 rounded-full ${practice.color} opacity-30`}
         animate={{ 
-          scale: [1, 1.05, 1],
-          opacity: [0.1, 0.2, 0.1]
+          scale: [1, 1.1, 1],
+          opacity: [0.1, 0.3, 0.1]
         }}
         transition={{ 
           repeat: Infinity, 

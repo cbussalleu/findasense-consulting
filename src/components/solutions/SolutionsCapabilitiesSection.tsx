@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 import { PracticeArea } from './PracticeArea';
 import { ConsultingCapability } from './ConsultingCapability';
 import { practiceAreas, consultingCapabilities } from './data';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export const SolutionsCapabilitiesSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredPractice, setHoveredPractice] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -46,36 +48,53 @@ export const SolutionsCapabilitiesSection = () => {
         </div>
         
         {/* Legend for Consulting Capabilities */}
-        <div className="text-center mb-12">
-          <div className="bg-accent/10 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono">
+        <div className="text-center mb-8">
+          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10">
+            <span className="mr-2">●</span>
             <span>Capacidades Consulting</span>
           </div>
         </div>
         
+        {/* Consulting capabilities in a horizontal row when not hovering */}
+        <div className={`flex flex-wrap justify-center gap-3 mb-12 transition-all duration-500 ${hoveredPractice ? 'opacity-0 h-0 overflow-hidden m-0' : 'opacity-100'}`}>
+          {consultingCapabilities.map((capability) => (
+            <div 
+              key={capability} 
+              className="bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-accent/20 pulse-subtle"
+            >
+              {capability}
+            </div>
+          ))}
+        </div>
+
         <div className="relative w-full aspect-square max-w-3xl mx-auto">
           {/* Practice Areas */}
-          {practiceAreas.map((practice, index) => (
-            <PracticeArea
-              key={practice.id}
-              practice={practice}
-              index={index}
-              totalItems={practiceAreas.length}
-              hoveredPractice={hoveredPractice}
-              setHoveredPractice={setHoveredPractice}
-            />
-          ))}
+          <div className="w-full flex justify-center items-center">
+            {practiceAreas.map((practice, index) => (
+              <PracticeArea
+                key={practice.id}
+                practice={practice}
+                index={index}
+                totalItems={practiceAreas.length}
+                hoveredPractice={hoveredPractice}
+                setHoveredPractice={setHoveredPractice}
+              />
+            ))}
+          </div>
           
-          {/* Consulting capabilities */}
-          {consultingCapabilities.map((capability, index) => (
-            <ConsultingCapability
-              key={capability}
-              capability={capability}
-              index={index}
-              totalItems={consultingCapabilities.length}
-              hoveredPractice={hoveredPractice}
-              practiceAreas={practiceAreas}
-            />
-          ))}
+          {/* Consulting capabilities - only visible when hovering a practice */}
+          <div className={`${hoveredPractice ? 'opacity-100' : 'opacity-0 pointer-events-none'} transition-opacity duration-500`}>
+            {consultingCapabilities.map((capability, index) => (
+              <ConsultingCapability
+                key={capability}
+                capability={capability}
+                index={index}
+                totalItems={consultingCapabilities.length}
+                hoveredPractice={hoveredPractice}
+                practiceAreas={practiceAreas}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 
 import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ConsultingCapabilityProps {
   capability: string;
@@ -21,6 +22,8 @@ export const ConsultingCapability = ({
   hoveredPractice,
   practiceAreas
 }: ConsultingCapabilityProps) => {
+  const isMobile = useIsMobile();
+  
   const getDistributionAngle = (index: number, total: number) => {
     const angleStep = 360 / total;
     return angleStep * index;
@@ -35,11 +38,10 @@ export const ConsultingCapability = ({
   const angle = getDistributionAngle(index, totalItems);
   
   // Use dynamic radius based on screen size for capabilities positioning
-  const baseRadius = 200;
-  const responsiveRadius = baseRadius * (window.innerWidth < 768 ? 0.8 : 1);
+  const baseRadius = isMobile ? 150 : 200;
   
   // Calculate base position
-  const basePos = getPosition(angle, responsiveRadius);
+  const basePos = getPosition(angle, baseRadius);
   
   // Adjust position if a practice is hovered
   let finalX = basePos.x;
@@ -50,7 +52,7 @@ export const ConsultingCapability = ({
     const hoveredIndex = practiceAreas.findIndex(p => p.id === hoveredPractice);
     if (hoveredIndex !== -1) {
       const practiceAngle = getDistributionAngle(hoveredIndex, practiceAreas.length);
-      const practicePos = getPosition(practiceAngle, 130);
+      const practicePos = getPosition(practiceAngle, isMobile ? 100 : 130);
       
       // Move capability closer to the hovered practice
       finalX = (basePos.x + practicePos.x * 1.5) / 2.5;
@@ -60,7 +62,7 @@ export const ConsultingCapability = ({
 
   return (
     <motion.div
-      className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer z-10"
+      className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer z-10 border border-accent/20"
       style={{
         top: `calc(50% + ${basePos.y}px)`,
         left: `calc(50% + ${basePos.x}px)`,

@@ -42,7 +42,7 @@ export const ProofSection = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="highlight-box">
+          <div className="highlight-box group hover:bg-dark/50 transition-all">
             <div className="mb-4 opacity-80">
               <svg viewBox="0 0 100 50" className="w-32 h-16">
                 <path d="M10,25 C10,15 30,15 50,25 C70,35 90,35 90,25" stroke="white" strokeWidth="2" fill="none" />
@@ -50,7 +50,7 @@ export const ProofSection = () => {
                 <circle cx="90" cy="25" r="4" fill="white" />
               </svg>
             </div>
-            <h3 className="text-xl text-white mb-2">Coca-Cola</h3>
+            <h3 className="text-xl text-white mb-2">Grupo Bimbo</h3>
             <div className="text-3xl font-display text-purple mb-4">93%</div>
             <p className="text-white/70 text-sm">Increase in customer engagement through our data-driven approach to experience design.</p>
             <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -61,14 +61,14 @@ export const ProofSection = () => {
             </div>
           </div>
           
-          <div className="highlight-box">
+          <div className="highlight-box group hover:bg-dark/50 transition-all">
             <div className="mb-4 opacity-80">
               <svg viewBox="0 0 100 50" className="w-32 h-16">
                 <rect x="20" y="10" width="60" height="30" stroke="white" strokeWidth="2" fill="none" />
                 <circle cx="50" cy="25" r="10" stroke="white" strokeWidth="2" fill="none" />
               </svg>
             </div>
-            <h3 className="text-xl text-white mb-2">Netflix</h3>
+            <h3 className="text-xl text-white mb-2">BBVA</h3>
             <div className="text-3xl font-display text-purple mb-4">87%</div>
             <p className="text-white/70 text-sm">Improvement in user retention rates after implementing our personalized recommendation engine.</p>
             <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -79,14 +79,14 @@ export const ProofSection = () => {
             </div>
           </div>
           
-          <div className="highlight-box">
+          <div className="highlight-box group hover:bg-dark/50 transition-all">
             <div className="mb-4 opacity-80">
               <svg viewBox="0 0 100 50" className="w-32 h-16">
                 <path d="M20,40 L50,10 L80,40" stroke="white" strokeWidth="2" fill="none" />
                 <circle cx="50" cy="10" r="5" fill="white" />
               </svg>
             </div>
-            <h3 className="text-xl text-white mb-2">Airbnb</h3>
+            <h3 className="text-xl text-white mb-2">Meta</h3>
             <div className="text-3xl font-display text-purple mb-4">78%</div>
             <p className="text-white/70 text-sm">Growth in marketplace activity through our comprehensive UX redesign and data strategy.</p>
             <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

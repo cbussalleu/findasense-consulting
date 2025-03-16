@@ -108,8 +108,8 @@ export const Hero = () => {
             </div>
           </h1>
           
-          <div className="mb-12 opacity-0 animate-fade-in" style={{ animationDelay: '1.5s', animationFillMode: 'forwards' }}>
-            <a href="#services" className="button-primary">
+          <div className="mb-12">
+            <a href="#solutions" className="button-primary inline-flex items-center justify-center px-6 py-3 rounded-md bg-accent text-white font-medium transition-all hover:bg-accent-light">
               <span className="flex items-center">
                 APRENDE MÁS DE CONSULTING 
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={18} />
