@@ -24,17 +24,31 @@ export const ConsultingCapability = ({
 }: ConsultingCapabilityProps) => {
   const isMobile = useIsMobile();
   
-  // Calculate position for capabilities below the legend
-  const getHorizontalPosition = (index: number, total: number) => {
-    // Distribute capabilities horizontally in a more compact arrangement
-    const width = isMobile ? 280 : 550; // Reduced width for the line
-    const step = width / (total - 1 || 1); // Space between each capability
-    return index * step - width / 2; // Center the line
+  // Calculate position for capabilities below the legend in a 2-row grid layout
+  const getHorizontalPosition = () => {
+    // Place in 2 rows with 3 items per row
+    const itemsPerRow = 3; 
+    const row = Math.floor(index / itemsPerRow);
+    const column = index % itemsPerRow;
+    
+    // Width calculations for the grid
+    const spacing = isMobile ? 120 : 200; // Spacing between items
+    const rowOffset = isMobile ? 50 : 70; // Vertical offset between rows
+    
+    // Calculate horizontal position based on column
+    const x = (column - 1) * spacing; // -1, 0, 1 for the three columns
+    
+    // Calculate vertical position based on row
+    const y = isMobile ? 65 : 90; // Base position below Capacidades Consulting
+    const finalY = y + (row * rowOffset);
+    
+    return { x, y: finalY };
   };
 
-  // Initial position: closer horizontal line below legend
-  const initialX = getHorizontalPosition(index, totalItems);
-  const initialY = isMobile ? 140 : 180; // Position closer to the "Capacidades Consulting" text
+  // Initial position: organized grid below legend
+  const position = getHorizontalPosition();
+  const initialX = position.x;
+  const initialY = position.y;
   
   // When a practice is hovered, animate to that practice
   let finalX = initialX;
@@ -53,7 +67,7 @@ export const ConsultingCapability = ({
       const practiceX = Math.cos((practiceAngle * Math.PI) / 180) * practiceRadius;
       const practiceY = Math.sin((practiceAngle * Math.PI) / 180) * practiceRadius;
       
-      // Calculate orbit position aroun the hovered practice
+      // Calculate orbit position around the hovered practice
       const orbitRadius = isMobile ? 80 : 100;
       const orbitAngle = 360 / totalItems * index;
       const orbitX = Math.cos((orbitAngle * Math.PI) / 180) * orbitRadius;
