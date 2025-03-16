@@ -70,7 +70,7 @@ export const SolutionsCapabilitiesSection = () => {
             ))}
           </div>
           
-          {/* Consulting capabilities - always visible in outer circle */}
+          {/* Consulting capabilities - now positioned below the legend in organized rows */}
           <div className="w-full h-full">
             {consultingCapabilities.map((capability, index) => (
               <ConsultingCapability

@@ -24,25 +24,24 @@ export const ConsultingCapability = ({
 }: ConsultingCapabilityProps) => {
   const isMobile = useIsMobile();
   
-  // Calculate position for capabilities below the legend in a 2-row grid layout
+  // Calculate initial position for capabilities aligned below the legend
   const getHorizontalPosition = () => {
-    // Place in 2 rows with 3 items per row
-    const itemsPerRow = 3; 
-    const row = Math.floor(index / itemsPerRow);
-    const column = index % itemsPerRow;
+    // For a centered 2x3 grid layout below "Capacidades Consulting"
+    const columns = 3;
+    const row = Math.floor(index / columns);
+    const col = index % columns;
     
-    // Width calculations for the grid
-    const spacing = isMobile ? 120 : 200; // Spacing between items
-    const rowOffset = isMobile ? 50 : 70; // Vertical offset between rows
+    // Width calculations for horizontal positioning
+    const spacing = isMobile ? 110 : 190; // Spacing between items
+    const centerOffset = spacing * (columns - 1) / 2; // Center the group
+    const x = (col * spacing) - centerOffset;
     
-    // Calculate horizontal position based on column
-    const x = (column - 1) * spacing; // -1, 0, 1 for the three columns
+    // Vertical positioning - two rows with offset
+    const baseY = isMobile ? 55 : 70; // Distance from "Capacidades Consulting"
+    const rowSpacing = isMobile ? 40 : 50; // Spacing between rows
+    const y = baseY + (row * rowSpacing);
     
-    // Calculate vertical position based on row
-    const y = isMobile ? 65 : 90; // Base position below Capacidades Consulting
-    const finalY = y + (row * rowOffset);
-    
-    return { x, y: finalY };
+    return { x, y };
   };
 
   // Initial position: organized grid below legend
