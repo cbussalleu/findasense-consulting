@@ -93,7 +93,13 @@ export const ScenarioFlowSection = () => {
         
         <Carousel 
           className="max-w-5xl mx-auto"
-          onSelect={(index) => setActiveSlide(index)}
+          opts={{
+            align: "center"
+          }}
+          onSelect={(index) => {
+            // This now correctly takes the index parameter from the Carousel component
+            setActiveSlide(index);
+          }}
         >
           <CarouselContent>
             {scenarios.map((scenario, index) => (
