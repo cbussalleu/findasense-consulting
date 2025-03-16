@@ -35,15 +35,25 @@ export const PracticeArea = ({
     return { x, y };
   };
 
+  // Calculate base radius dynamically based on screen width
+  // This ensures the circles are properly centered and sized
+  const getResponsiveRadius = () => {
+    if (isMobile) return 90;
+    const width = typeof window !== 'undefined' ? window.innerWidth : 1024;
+    if (width < 768) return 100;
+    if (width < 1024) return 130;
+    if (width < 1280) return 150;
+    return 170;
+  };
+
   const angle = getDistributionAngle(index, totalItems);
-  // Use a smaller radius on mobile to ensure proper centering
-  const radius = isMobile ? 100 : 130;
+  const radius = getResponsiveRadius();
   const { x, y } = getPosition(angle, radius);
 
   return (
     <motion.div
       key={practice.id}
-      className={`absolute w-20 h-20 md:w-24 md:h-24 ${practice.color} rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-300`}
+      className={`absolute w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 ${practice.color} rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-300`}
       style={{
         top: `calc(50% + ${y}px)`,
         left: `calc(50% + ${x}px)`,
@@ -64,7 +74,7 @@ export const PracticeArea = ({
         }
       }}
     >
-      <span className="text-xs md:text-sm font-medium text-center px-1 md:px-2">{practice.name}</span>
+      <span className="text-xs sm:text-sm font-medium text-center px-1">{practice.name}</span>
       
       {/* Pulsing animation on the circles to indicate they are interactive */}
       <motion.div 

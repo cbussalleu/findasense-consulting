@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { 
   Carousel,
@@ -98,10 +98,16 @@ export const ScenarioFlowSection = () => {
                   {/* Standard Scenario */}
                   <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
                     <div className="mb-4 chip bg-primary/10 text-primary">DESAFÍO ESTÁNDAR</div>
-                    <p className="text-white text-xl font-medium mb-6">{scenario.challenge}</p>
+                    <p className="text-white text-xl font-medium mb-6">
+                      <span className="relative">
+                        {scenario.challenge.charAt(0)}
+                        <span className="absolute bottom-0 left-1 w-full h-0.5 bg-primary origin-left transform transition-all duration-1000 scenario-line"></span>
+                      </span>
+                      {scenario.challenge.substring(1)}
+                    </p>
                     <div className="mt-auto">
                       <div className="flex items-center justify-between">
-                        <ArrowRight className="text-primary animate-pulse flow-arrow" size={24} />
+                        <ArrowRight className="text-primary flow-arrow" size={24} />
                         <span className={cn("text-lg font-mono px-4 py-1 rounded-full", scenario.destinationColor)}>
                           {scenario.destination}
                         </span>
@@ -112,10 +118,16 @@ export const ScenarioFlowSection = () => {
                   {/* Alternative Complex Scenario */}
                   <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
                     <div className="mb-4 chip bg-accent/10 text-accent">DESAFÍO COMPLEJO</div>
-                    <p className="text-white text-xl font-medium mb-6">{scenario.alternativeChallenge}</p>
+                    <p className="text-white text-xl font-medium mb-6">
+                      <span className="relative">
+                        {scenario.alternativeChallenge.charAt(0)}
+                        <span className="absolute bottom-0 left-1 w-full h-0.5 bg-accent origin-left transform transition-all duration-1000 scenario-line"></span>
+                      </span>
+                      {scenario.alternativeChallenge.substring(1)}
+                    </p>
                     <div className="mt-auto">
                       <div className="flex items-center justify-between">
-                        <ArrowRight className="text-accent animate-pulse flow-arrow" size={24} />
+                        <ArrowRight className="text-accent flow-arrow" size={24} />
                         <span className={cn("text-lg font-mono px-4 py-1 rounded-full", scenario.alternativeColor)}>
                           {scenario.alternativeDestination}
                         </span>
@@ -126,29 +138,38 @@ export const ScenarioFlowSection = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute left-0 border-white/20 bg-dark/50 backdrop-blur-sm hover:bg-dark/80" />
-          <CarouselNext className="absolute right-0 border-white/20 bg-dark/50 backdrop-blur-sm hover:bg-dark/80" />
+          <CarouselPrevious className="absolute left-0 border-white/20 bg-dark/50 backdrop-blur-sm hover:bg-dark/80">
+            <ChevronLeft className="h-4 w-4 text-white/70" />
+          </CarouselPrevious>
+          <CarouselNext className="absolute right-0 border-white/20 bg-dark/50 backdrop-blur-sm hover:bg-dark/80">
+            <ChevronRight className="h-4 w-4 text-white/70" />
+          </CarouselNext>
         </Carousel>
 
         {/* Flow arrow animation */}
         <style dangerouslySetInnerHTML={{ __html: `
           .flow-arrow {
             position: relative;
+            animation: pulse 2s infinite alternate;
           }
-          .flow-arrow::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 100%;
-            height: 2px;
-            width: 0;
-            background: currentColor;
-            transition: width 0.4s ease;
-            animation: flowLine 1.5s infinite alternate;
+          
+          @keyframes pulse {
+            0% { opacity: 0.7; transform: translateX(0); }
+            100% { opacity: 1; transform: translateX(5px); }
           }
-          @keyframes flowLine {
+          
+          .scenario-line {
+            animation: lineGrow 3s infinite alternate;
+          }
+          
+          @keyframes lineGrow {
             0% { width: 0; }
-            100% { width: 100px; }
+            100% { width: 100%; }
+          }
+          
+          .highlight-box:hover .scenario-line {
+            animation-play-state: running;
+            animation-duration: 1.5s;
           }
         `}} />
       </div>

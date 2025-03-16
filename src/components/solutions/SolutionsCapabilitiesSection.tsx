@@ -40,7 +40,7 @@ export const SolutionsCapabilitiesSection = () => {
       className={`py-24 min-h-screen bg-dark transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
     >
       <div className="section-container">
-        <div className="text-center mb-24">
+        <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white leading-tight max-w-5xl mx-auto uppercase">
             <span className="text-accent">NUESTRAS CAPACIDADES</span> SE INTEGRAN EN CADA PRÁCTICA PARA <span className="text-primary">OFRECER SOLUCIONES</span> A NUESTROS CLIENTES
           </h2>
@@ -48,28 +48,32 @@ export const SolutionsCapabilitiesSection = () => {
         </div>
         
         {/* Legend for Consulting Capabilities */}
-        <div className="text-center mb-8">
-          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10">
-            <span className="mr-2">●</span>
+        <div className="text-center mb-6">
+          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
+            <span className="mr-2 animate-pulse">●</span>
             <span>Capacidades Consulting</span>
           </div>
         </div>
         
         {/* Consulting capabilities in a horizontal row when not hovering */}
-        <div className={`flex flex-wrap justify-center gap-3 mb-12 transition-all duration-500 ${hoveredPractice ? 'opacity-0 h-0 overflow-hidden m-0' : 'opacity-100'}`}>
-          {consultingCapabilities.map((capability) => (
+        <div className={`flex flex-wrap justify-center gap-3 mb-8 transition-all duration-500 ${hoveredPractice ? 'opacity-0 h-0 overflow-hidden m-0' : 'opacity-100'}`}>
+          {consultingCapabilities.map((capability, index) => (
             <div 
               key={capability} 
-              className="bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-accent/20 pulse-subtle"
+              className="bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-accent/20 capability-tag"
+              style={{
+                animationDelay: `${index * 0.1}s`,
+                animationDuration: `${2 + (index % 3) * 0.5}s`
+              }}
             >
               {capability}
             </div>
           ))}
         </div>
 
-        <div className="relative w-full aspect-square max-w-3xl mx-auto">
+        <div className="relative w-full mx-auto" style={{ height: isMobile ? '500px' : '600px' }}>
           {/* Practice Areas */}
-          <div className="w-full flex justify-center items-center">
+          <div className="w-full h-full flex justify-center items-center">
             {practiceAreas.map((practice, index) => (
               <PracticeArea
                 key={practice.id}

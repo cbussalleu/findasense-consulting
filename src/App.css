@@ -58,3 +58,40 @@
     box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
   }
 }
+
+/* Capability movement animation */
+@keyframes capability-orbit {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-15px) translateX(5px);
+  }
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+}
+
+.capability-tag {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.capability-tag:hover {
+  animation: capability-orbit 2s infinite;
+}
+
+/* Button underline animation */
+.btn-underline-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: width 0.3s ease;
+}
+
+.btn-underline-hover:hover::after {
+  width: 100%;
+}

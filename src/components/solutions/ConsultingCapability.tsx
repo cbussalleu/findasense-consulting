@@ -38,10 +38,13 @@ export const ConsultingCapability = ({
   const angle = getDistributionAngle(index, totalItems);
   
   // Use dynamic radius based on screen size for capabilities positioning
-  const baseRadius = isMobile ? 150 : 200;
+  const baseRadius = isMobile ? 100 : 140;
   
-  // Calculate base position
-  const basePos = getPosition(angle, baseRadius);
+  // Calculate base position - initially positioned at the top in a horizontal row
+  const basePos = { 
+    x: ((index - totalItems / 2) * 100) + 50,
+    y: -120
+  };
   
   // Adjust position if a practice is hovered
   let finalX = basePos.x;
@@ -54,9 +57,14 @@ export const ConsultingCapability = ({
       const practiceAngle = getDistributionAngle(hoveredIndex, practiceAreas.length);
       const practicePos = getPosition(practiceAngle, isMobile ? 100 : 130);
       
-      // Move capability closer to the hovered practice
-      finalX = (basePos.x + practicePos.x * 1.5) / 2.5;
-      finalY = (basePos.y + practicePos.y * 1.5) / 2.5;
+      // Calculate orbit position around the hovered practice
+      const orbitAngle = getDistributionAngle(index, totalItems);
+      const orbitX = Math.cos((orbitAngle * Math.PI) / 180) * (isMobile ? 60 : 80);
+      const orbitY = Math.sin((orbitAngle * Math.PI) / 180) * (isMobile ? 60 : 80);
+      
+      // Position capability to orbit around the hovered practice
+      finalX = practicePos.x + orbitX;
+      finalY = practicePos.y + orbitY;
     }
   }
 
@@ -71,9 +79,15 @@ export const ConsultingCapability = ({
       animate={{
         top: `calc(50% + ${finalY}px)`,
         left: `calc(50% + ${finalX}px)`,
-        scale: hoveredPractice ? 1.1 : 1
+        scale: hoveredPractice ? 1.1 : 1,
+        boxShadow: hoveredPractice ? "0 0 15px rgba(79, 70, 229, 0.5)" : "none"
       }}
-      transition={{ type: "spring", stiffness: 100, damping: 10 }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 100, 
+        damping: 10,
+        delay: index * 0.05 
+      }}
       whileHover={{ scale: 1.15 }}
       whileTap={{ scale: 0.95 }}
     >
