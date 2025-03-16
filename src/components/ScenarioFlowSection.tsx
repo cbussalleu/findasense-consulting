@@ -96,9 +96,9 @@ export const ScenarioFlowSection = () => {
           opts={{
             align: "center"
           }}
-          onSelect={(index) => {
-            // This now correctly takes the index parameter from the Carousel component
-            setActiveSlide(index);
+          onSelect={(api) => {
+            // Get the current selected slide index from the API
+            setActiveSlide(api.selectedScrollSnap());
           }}
         >
           <CarouselContent>
@@ -109,11 +109,7 @@ export const ScenarioFlowSection = () => {
                   <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
                     <div className="mb-4 chip bg-primary/10 text-primary">DESAFÍO ESTÁNDAR</div>
                     <p className="text-white text-xl font-medium mb-6 relative">
-                      {scenario.challenge.split('').map((char, i) => (
-                        <span key={i} className={i === 0 ? "text-primary first-letter-highlight" : ""}>
-                          {char}
-                        </span>
-                      ))}
+                      {scenario.challenge}
                       <span className={`connection-line ${activeSlide === index ? 'active' : ''}`}></span>
                     </p>
                     <div className="mt-auto">
@@ -130,11 +126,7 @@ export const ScenarioFlowSection = () => {
                   <div className="highlight-box bg-gradient-to-br from-dark to-secondary/40 flex flex-col h-full">
                     <div className="mb-4 chip bg-accent/10 text-accent">DESAFÍO COMPLEJO</div>
                     <p className="text-white text-xl font-medium mb-6 relative">
-                      {scenario.alternativeChallenge.split('').map((char, i) => (
-                        <span key={i} className={i === 0 ? "text-accent first-letter-highlight" : ""}>
-                          {char}
-                        </span>
-                      ))}
+                      {scenario.alternativeChallenge}
                       <span className={`connection-line accent ${activeSlide === index ? 'active' : ''}`}></span>
                     </p>
                     <div className="mt-auto">
@@ -159,10 +151,6 @@ export const ScenarioFlowSection = () => {
         </Carousel>
 
         <style dangerouslySetInnerHTML={{ __html: `
-          .first-letter-highlight {
-            position: relative;
-          }
-          
           .connection-line {
             position: absolute;
             bottom: -10px;
@@ -171,14 +159,7 @@ export const ScenarioFlowSection = () => {
             height: 2px;
             background: currentColor;
             transition: width 1.5s ease-in-out;
-          }
-          
-          .connection-line.active {
-            width: 100%;
-          }
-          
-          .connection-line.accent {
-            background: rgb(99, 102, 241);
+            display: none;
           }
           
           .flow-arrow {

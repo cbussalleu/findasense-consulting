@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useState } from 'react';
@@ -24,7 +23,6 @@ export const PracticeArea = ({
   setHoveredPractice 
 }: PracticeAreaProps) => {
   const isMobile = useIsMobile();
-  const [showDetails, setShowDetails] = useState(false);
   
   const getDistributionAngle = (index: number, total: number) => {
     const angleStep = 360 / total;
@@ -50,14 +48,16 @@ export const PracticeArea = ({
   const angle = getDistributionAngle(index, totalItems);
   const radius = getResponsiveRadius();
   const { x, y } = getPosition(angle, radius);
+  
+  // Increase the size of practice circles
+  const circleSize = isMobile ? "w-24 h-24" : "w-28 h-28";
 
   const handleClick = () => {
+    // Toggle the current practice or close all if this one was already active
     if (hoveredPractice === practice.id) {
       setHoveredPractice(null);
-      setShowDetails(false);
     } else {
       setHoveredPractice(practice.id);
-      setShowDetails(!showDetails);
     }
   };
 
@@ -69,15 +69,17 @@ export const PracticeArea = ({
 
   const handleMouseLeave = () => {
     if (!isMobile) {
-      setHoveredPractice(null);
-      setShowDetails(false);
+      // Only hide on mouse leave if not clicked (mobile behavior)
+      // We keep the hover state on desktop for a better UX
     }
   };
+
+  const showDetails = hoveredPractice === practice.id;
 
   return (
     <motion.div
       key={practice.id}
-      className={`absolute w-20 h-20 sm:w-22 sm:h-22 md:w-24 md:h-24 ${practice.color} rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-300`}
+      className={`absolute ${circleSize} ${practice.color} rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-300`}
       style={{
         top: `calc(50% + ${y}px)`,
         left: `calc(50% + ${x}px)`,
@@ -110,7 +112,7 @@ export const PracticeArea = ({
         }}
       />
       
-      {/* Subsets for each practice area - shown only on click */}
+      {/* Subsets for each practice area - shown only when this practice is selected */}
       {showDetails && (
         <div 
           className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-dark/90 rounded-lg p-3 w-48 border border-white/10 z-50"

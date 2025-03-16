@@ -24,25 +24,17 @@ export const ConsultingCapability = ({
 }: ConsultingCapabilityProps) => {
   const isMobile = useIsMobile();
   
-  const getDistributionAngle = (index: number, total: number) => {
-    const angleStep = 360 / total;
-    return angleStep * index;
+  // Calculate position for capabilities below the legend
+  const getHorizontalPosition = (index: number, total: number) => {
+    // Distribute capabilities horizontally in a line below the legend
+    const width = isMobile ? 300 : 600; // Total width of the line
+    const step = width / (total + 1); // Space between each capability
+    return (index + 1) * step - width / 2; // Center the line
   };
 
-  const getPosition = (angle: number, radius: number) => {
-    const x = Math.cos((angle * Math.PI) / 180) * radius;
-    const y = Math.sin((angle * Math.PI) / 180) * radius;
-    return { x, y };
-  };
-
-  // Use a larger radius to position capabilities outside the practice circles
-  const calculatedAngle = getDistributionAngle(index, totalItems);
-  const outerRadius = isMobile ? 170 : 240;
-  const outerPos = getPosition(calculatedAngle, outerRadius);
-  
-  // If no practice is hovered, position capabilities in an outer circle
-  let initialX = outerPos.x;
-  let initialY = outerPos.y;
+  // Initial position: horizontal line below legend
+  const initialX = getHorizontalPosition(index, totalItems);
+  const initialY = isMobile ? 50 : 80; // Distance below the legend
   
   // When a practice is hovered, animate to that practice
   let finalX = initialX;
@@ -52,19 +44,24 @@ export const ConsultingCapability = ({
     // Find the hovered practice's position
     const hoveredIndex = practiceAreas.findIndex(p => p.id === hoveredPractice);
     if (hoveredIndex !== -1) {
-      const practiceAngle = getDistributionAngle(hoveredIndex, practiceAreas.length);
+      // Calculate angle for practice position
+      const angleStep = 360 / practiceAreas.length;
+      const practiceAngle = angleStep * hoveredIndex;
+      
+      // Calculate practice position
       const practiceRadius = isMobile ? 90 : 170;
-      const practicePos = getPosition(practiceAngle, practiceRadius);
+      const practiceX = Math.cos((practiceAngle * Math.PI) / 180) * practiceRadius;
+      const practiceY = Math.sin((practiceAngle * Math.PI) / 180) * practiceRadius;
       
       // Calculate orbit position around the hovered practice
       const orbitRadius = isMobile ? 80 : 100;
-      const orbitAngle = getDistributionAngle(index, totalItems);
+      const orbitAngle = 360 / totalItems * index;
       const orbitX = Math.cos((orbitAngle * Math.PI) / 180) * orbitRadius;
       const orbitY = Math.sin((orbitAngle * Math.PI) / 180) * orbitRadius;
       
       // Position capability to orbit around the hovered practice
-      finalX = practicePos.x + orbitX;
-      finalY = practicePos.y + orbitY;
+      finalX = practiceX + orbitX;
+      finalY = practiceY + orbitY;
     }
   }
 
