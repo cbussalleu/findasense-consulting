@@ -19,22 +19,10 @@ interface NewsItem {
 
 const newsItems: NewsItem[] = [
   {
-    date: "Feb-2",
-    title: "Actualización Caso Grupo Bimbo",
-    status: "Terminado",
-    description: "Se actualizaron los puntos de contacto y las métricas de seguimiento en el caso de Grupo Bimbo. Ahora incluye resultados de la última campaña de Navidad 2023."
-  },
-  {
-    date: "Feb-13",
-    title: "Creación Caso Moventis",
+    date: "Mar-3",
+    title: "Estudio Hábitos de Consumo de Contenido",
     status: "Iniciado",
-    description: "Nuevo proyecto para documentar el caso de éxito de Moventis, centrado en la transformación del journey de compra y la mejora de conversión."
-  },
-  {
-    date: "Feb-17",
-    title: "Actualización Deck Customer Journey",
-    status: "Terminado",
-    description: "Renovación completa del deck de metodología de Customer Journey con nuevos ejemplos, plantillas actualizadas y métricas de seguimiento."
+    description: "Investigación sobre los nuevos hábitos de consumo de contenido en plataformas digitales y sus implicaciones para la estrategia de comunicación de marcas."
   },
   {
     date: "Feb-25",
@@ -43,10 +31,22 @@ const newsItems: NewsItem[] = [
     description: "Desarrollo de un formato estándar para presentar diagnósticos rápidos de experiencia de cliente, con estructura modular para distintos sectores."
   },
   {
-    date: "Mar-3",
-    title: "Estudio Hábitos de Consumo de Contenido",
+    date: "Feb-17",
+    title: "Actualización Deck Customer Journey",
+    status: "Terminado",
+    description: "Renovación completa del deck de metodología de Customer Journey con nuevos ejemplos, plantillas actualizadas y métricas de seguimiento."
+  },
+  {
+    date: "Feb-13",
+    title: "Creación Caso Moventis",
     status: "Iniciado",
-    description: "Investigación sobre los nuevos hábitos de consumo de contenido en plataformas digitales y sus implicaciones para la estrategia de comunicación de marcas."
+    description: "Nuevo proyecto para documentar el caso de éxito de Moventis, centrado en la transformación del journey de compra y la mejora de conversión."
+  },
+  {
+    date: "Feb-2",
+    title: "Actualización Caso Grupo Bimbo",
+    status: "Terminado",
+    description: "Se actualizaron los puntos de contacto y las métricas de seguimiento en el caso de Grupo Bimbo. Ahora incluye resultados de la última campaña de Navidad 2023."
   }
 ];
 

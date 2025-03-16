@@ -26,15 +26,15 @@ export const ConsultingCapability = ({
   
   // Calculate position for capabilities below the legend
   const getHorizontalPosition = (index: number, total: number) => {
-    // Distribute capabilities horizontally in a line below the legend
-    const width = isMobile ? 300 : 600; // Total width of the line
+    // Distribute capabilities horizontally in a more compact arrangement
+    const width = isMobile ? 280 : 550; // Reduced width for the line
     const step = width / (total - 1 || 1); // Space between each capability
     return index * step - width / 2; // Center the line
   };
 
-  // Initial position: horizontal line below legend
+  // Initial position: closer horizontal line below legend
   const initialX = getHorizontalPosition(index, totalItems);
-  const initialY = isMobile ? 80 : 100; // Increased distance below the legend
+  const initialY = isMobile ? 140 : 180; // Position closer to the "Capacidades Consulting" text
   
   // When a practice is hovered, animate to that practice
   let finalX = initialX;
@@ -53,7 +53,7 @@ export const ConsultingCapability = ({
       const practiceX = Math.cos((practiceAngle * Math.PI) / 180) * practiceRadius;
       const practiceY = Math.sin((practiceAngle * Math.PI) / 180) * practiceRadius;
       
-      // Calculate orbit position around the hovered practice
+      // Calculate orbit position aroun the hovered practice
       const orbitRadius = isMobile ? 80 : 100;
       const orbitAngle = 360 / totalItems * index;
       const orbitX = Math.cos((orbitAngle * Math.PI) / 180) * orbitRadius;
