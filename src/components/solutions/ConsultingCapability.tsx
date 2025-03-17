@@ -23,30 +23,36 @@ export const ConsultingCapability = ({
 }: ConsultingCapabilityProps) => {
   const isMobile = useIsMobile();
   
-  // Calculate initial position for capabilities aligned below the legend
+  // Calculate initial position for capabilities
   const getHorizontalPosition = () => {
-    // Distribución responsiva: 2 columnas en móvil, 3 en tablet, 6 en desktop grande
-    const getColumns = () => {
-      if (isMobile) return 2;
-      
-      // Detectamos si estamos en una pantalla muy ancha (>1200px)
-      const isWideScreen = window.innerWidth > 1200;
-      if (isWideScreen) return Math.min(6, totalItems); // Una sola fila en pantallas anchas
-      
-      return 3; // 3 columnas para tablet/desktop normal
-    };
+    // Determinamos la distribución basada en el ancho de pantalla
+    let columns = 2; // Default para móvil
     
-    const columns = getColumns();
+    if (!isMobile) {
+      const isWideScreen = typeof window !== 'undefined' && window.innerWidth > 1200;
+      if (isWideScreen) {
+        columns = 3; // 3 elementos por fila en pantallas anchas
+      } else {
+        columns = 2; // Desktop normal: 2 columnas
+      }
+    }
+    
+    // Determinar fila y columna basado en índice
     const row = Math.floor(index / columns);
     const col = index % columns;
     
-    // Ajustamos el espaciado según el ancho de pantalla
-    const spacing = isMobile ? 170 : (window.innerWidth > 1200 ? 140 : 180);
+    // Calcular espaciado horizontal apropiado
+    let spacing = isMobile ? 170 : 200;
+    if (!isMobile && typeof window !== 'undefined' && window.innerWidth > 1200) {
+      spacing = 260; // Más espacio en pantallas anchas
+    }
+    
     const centerOffset = spacing * (columns - 1) / 2;
     const x = (col * spacing) - centerOffset;
     
-    // Aumentamos significativamente la distancia vertical para evitar superposición
-    const baseY = isMobile ? -220 : -290; // Más alejado de los círculos
+    // CLAVE: Aumentamos drásticamente la separación vertical para evitar superposición
+    // con los círculos en todas las resoluciones
+    const baseY = isMobile ? -350 : -420; // Valores mucho más altos
     const rowSpacing = isMobile ? 70 : 80;
     const y = baseY + (row * rowSpacing);
     
