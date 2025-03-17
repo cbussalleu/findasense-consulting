@@ -85,8 +85,8 @@ export const SolutionsCapabilitiesSection = () => {
         </div>
         
         <div className="relative">
-          {/* Capacidades - con animación recuperada */}
-          <div className="w-full mb-20">
+          {/* Capacidades - ahora con mayor separación de los círculos */}
+          <div className="w-full mb-32"> {/* Aumentado el margen inferior */}
             {consultingCapabilities.map((capability, index) => (
               <ConsultingCapability
                 key={capability}
