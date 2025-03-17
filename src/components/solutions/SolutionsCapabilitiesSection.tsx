@@ -10,7 +10,12 @@ export const SolutionsCapabilitiesSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredPractice, setHoveredPractice] = useState<string | null>(null);
+  const [isClickActive, setIsClickActive] = useState(false);
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    setIsClickActive(hoveredPractice !== null);
+  }, [hoveredPractice]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -33,6 +38,11 @@ export const SolutionsCapabilitiesSection = () => {
       }
     };
   }, []);
+
+  // Manejador para seleccionar/deseleccionar círculos
+  const handlePracticeSelection = (practiceId: string | null) => {
+    setHoveredPractice(hoveredPractice === practiceId ? null : practiceId);
+  };
 
   // Función para calcular posición de círculos en formación circular
   const getCirclePosition = (index: number, totalItems: number) => {
@@ -76,17 +86,31 @@ export const SolutionsCapabilitiesSection = () => {
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
-        {/* Badge "Capacidades Consulting" */}
-        <div className="text-center mb-12">
+        {/* Badge "Capacidades Consulting" y capacidades fijas */}
+        <div className="text-center mb-12 relative">
           <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
             <span className="mr-2 animate-pulse">●</span>
             <span>Capacidades Consulting</span>
           </div>
+          
+          {/* Capacidades fijas (siempre cerca del badge) */}
+          <div className={`w-full relative mt-6 transition-opacity duration-500 ${isClickActive ? 'opacity-0' : 'opacity-100'}`}>
+            <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
+              {consultingCapabilities.map((capability, index) => (
+                <div 
+                  key={`fixed-${capability}`}
+                  className="bg-accent/10 text-accent px-3 py-1.5 rounded-full text-xs font-mono cursor-pointer border border-accent/30 capability-tag shadow-sm hover:bg-accent/20 transition-all duration-300 text-center"
+                >
+                  {capability}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
         
         <div className="relative flex flex-col items-center">
-          {/* Capacidades debajo del badge */}
-          <div className="w-full h-[180px] relative mb-6 mt-4">
+          {/* Capacidades animadas (solo visibles al hacer clic) */}
+          <div className={`w-full h-40 relative mb-6 mt-4 transition-opacity duration-500 ${isClickActive ? 'opacity-100' : 'opacity-0'}`}>
             {consultingCapabilities.map((capability, index) => (
               <ConsultingCapability
                 key={capability}
@@ -109,7 +133,7 @@ export const SolutionsCapabilitiesSection = () => {
                   index={index}
                   totalItems={practiceAreas.length}
                   hoveredPractice={hoveredPractice}
-                  setHoveredPractice={setHoveredPractice}
+                  setHoveredPractice={handlePracticeSelection}
                   consultingCapabilities={consultingCapabilities}
                 />
               ))}
