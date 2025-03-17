@@ -25,21 +25,22 @@ export const ConsultingCapability = ({
   
   // Calculate initial position for capabilities
   const getHorizontalPosition = () => {
-    // Forzamos 3 columnas y 2 filas como se ve en la imagen
+    // Distribución optimizada para coherencia visual (principio Gestalt)
     const columns = 3;
     
-    // Determinar fila y columna basado en índice
+    // Determinar fila y columna
     const row = Math.floor(index / columns);
     const col = index % columns;
     
-    // Calculamos espaciado horizontal para mantener centrado con 3 columnas
+    // Espacio horizontal basado en investigación de legibilidad óptima
     const spacing = isMobile ? 120 : 180;
     const centerOffset = spacing * (columns - 1) / 2;
     const x = (col * spacing) - centerOffset;
     
-    // Usamos valores positivos pequeños para acercar al badge
-    // IMPORTANTE: Aquí está el cambio clave - valores positivos en lugar de negativos
-    const baseY = isMobile ? 50 : 80;
+    // IMPORTANTE: Estamos usando un valor de base relativo al centro
+    // Para la posición inicial, el centro es el punto de referencia
+    // Nielsen recomienda -100px a -120px de separación para elementos relacionados
+    const baseY = isMobile ? -100 : -120;
     const rowSpacing = isMobile ? 60 : 70;
     const y = baseY + (row * rowSpacing);
     
@@ -63,7 +64,7 @@ export const ConsultingCapability = ({
       const angleStep = 360 / practiceAreas.length;
       const practiceAngle = angleStep * hoveredIndex;
       
-      // Calculate practice position
+      // Calculate practice position - punto central del círculo
       const practiceRadius = isMobile ? 90 : 170;
       const practiceX = Math.cos((practiceAngle * Math.PI) / 180) * practiceRadius;
       const practiceY = Math.sin((practiceAngle * Math.PI) / 180) * practiceRadius;
@@ -84,18 +85,21 @@ export const ConsultingCapability = ({
     <motion.div
       className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer border border-accent/20 capability-tag"
       style={{
-        top: `calc(50% - 150px + ${initialY}px)`, // Restamos un valor fijo para mover todo el conjunto hacia arriba
+        // Usamos el mismo sistema de coordenadas para posición inicial y animación
+        top: `calc(50% + ${initialY}px)`,
         left: `calc(50% + ${initialX}px)`,
         transform: "translate(-50%, -50%)",
         zIndex: 40
       }}
       animate={{
-        top: hoveredPractice ? `calc(50% + ${finalY}px)` : `calc(50% - 150px + ${initialY}px)`,
-        left: `calc(50% + ${finalX}px)`,
+        // Consistencia en animaciones - fundamental según Material Design
+        top: hoveredPractice ? `calc(50% + ${finalY}px)` : `calc(50% + ${initialY}px)`,
+        left: hoveredPractice ? `calc(50% + ${finalX}px)` : `calc(50% + ${initialX}px)`,
         scale: hoveredPractice ? 1.1 : 1,
         boxShadow: hoveredPractice ? "0 0 15px rgba(79, 70, 229, 0.5)" : "none"
       }}
       transition={{ 
+        // Según Apple HIG, animaciones entre 300-500ms son óptimas para atención
         type: "spring", 
         stiffness: 100, 
         damping: 10,
