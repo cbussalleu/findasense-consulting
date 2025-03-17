@@ -12,8 +12,6 @@ interface ConsultingCapabilityProps {
     color: string;
     subsets: string[];
   }>;
-  badgePosition: { top: number; height: number };
-  spacingBetweenGroups: number;
 }
 
 export const ConsultingCapability = ({ 
@@ -21,9 +19,7 @@ export const ConsultingCapability = ({
   index, 
   totalItems, 
   hoveredPractice,
-  practiceAreas,
-  badgePosition,
-  spacingBetweenGroups
+  practiceAreas
 }: ConsultingCapabilityProps) => {
   const isMobile = useIsMobile();
   
@@ -54,18 +50,10 @@ export const ConsultingCapability = ({
     const centerOffset = spacing * (columns - 1) / 2;
     const x = (col * spacing) - centerOffset;
     
-    // Ahora calculamos la posición Y relativa al badge
-    // Usamos un cálculo de posiciones relativas, no valores fijos
-    const badgeBottomPosition = badgePosition.top + badgePosition.height;
-    const capabilitiesTopPosition = badgeBottomPosition + spacingBetweenGroups;
-    
-    // Convertimos a coordenadas relativas al centro del contenedor (donde 0 es el centro)
-    const containerCenter = window.innerHeight / 2;
-    const relativeY = capabilitiesTopPosition - containerCenter;
-    
-    // Ajustamos según la fila
+    // Valor extremadamente negativo para asegurar que estén muy por encima de los círculos
+    const baseY = isMobile ? -400 : -480;
     const rowSpacing = isMobile ? 70 : 80;
-    const y = relativeY + (row * rowSpacing);
+    const y = baseY + (row * rowSpacing);
     
     return { x, y };
   };
@@ -106,17 +94,26 @@ export const ConsultingCapability = ({
 
   return (
     <motion.div
-      className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer z-10 border border-accent/20 capability-tag"
+      className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer border border-accent/20 capability-tag"
       style={{
         top: `calc(50% + ${initialY}px)`,
         left: `calc(50% + ${initialX}px)`,
         transform: "translate(-50%, -50%)",
+        // Asegúrate de que siempre están visibles y por encima de los círculos
+        zIndex: 50,
+        opacity: 1,
+        willChange: "top, left, transform" // Optimización para animaciones suaves
       }}
       animate={{
         top: `calc(50% + ${finalY}px)`,
         left: `calc(50% + ${finalX}px)`,
         scale: hoveredPractice ? 1.1 : 1,
+        zIndex: 50, // Mantenemos el z-index alto incluso durante la animación
         boxShadow: hoveredPractice ? "0 0 15px rgba(79, 70, 229, 0.5)" : "none"
+      }}
+      initial={{ 
+        opacity: 1, // Asegura que estén visibles desde el principio
+        scale: 1
       }}
       transition={{ 
         type: "spring", 
