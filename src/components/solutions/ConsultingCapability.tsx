@@ -47,12 +47,23 @@ export const ConsultingCapability = ({
       spacing = 260; // Más espacio en pantallas anchas
     }
     
+    // Garantizamos que estén perfectamente centrados
     const centerOffset = spacing * (columns - 1) / 2;
-    const x = (col * spacing) - centerOffset;
     
-    // REDUCIMOS los valores negativos para acercar las capacidades al badge
-    const baseY = isMobile ? -170 : -200; // Valores menos negativos = más cerca del badge
-    const rowSpacing = isMobile ? 70 : 80;
+    // Ajustamos cálculo para pantallas ultra-anchas
+    let x = (col * spacing) - centerOffset;
+    
+    // Si hay una sola fila con 3 elementos, aseguramos centrado perfecto
+    if (columns === 3 && totalItems === 6) {
+      // Si es el último elemento de la segunda fila y está solo
+      if (index === 5) {
+        x = 0; // Centrado perfecto para el elemento solitario
+      }
+    }
+    
+    // REDUCIMOS MUCHO MÁS la distancia vertical
+    const baseY = isMobile ? -120 : -140; // Valores mucho menos negativos para estar más cerca
+    const rowSpacing = isMobile ? 60 : 70; // Reducimos también el espaciado entre filas
     const y = baseY + (row * rowSpacing);
     
     return { x, y };
