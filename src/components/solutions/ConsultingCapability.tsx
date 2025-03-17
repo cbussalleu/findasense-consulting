@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -26,19 +25,19 @@ export const ConsultingCapability = ({
   
   // Calculate initial position for capabilities aligned below the legend
   const getHorizontalPosition = () => {
-    // For a centered 2x3 grid layout below "Capacidades Consulting"
+    // Organizar en 2 filas con 3 elementos por fila
     const columns = 3;
     const row = Math.floor(index / columns);
     const col = index % columns;
     
-    // Width calculations for horizontal positioning
+    // Espaciado horizontal entre capacidades
     const spacing = isMobile ? 110 : 190; // Spacing between items
     const centerOffset = spacing * (columns - 1) / 2; // Center the group
     const x = (col * spacing) - centerOffset;
     
-    // Vertical positioning - two rows with offset
-    const baseY = isMobile ? 55 : 70; // Distance from "Capacidades Consulting"
-    const rowSpacing = isMobile ? 40 : 50; // Spacing between rows
+    // Posición vertical - ajustada para que aparezcan justo debajo del badge
+    const baseY = isMobile ? 120 : 150; // Distancia desde "Capacidades Consulting"
+    const rowSpacing = isMobile ? 60 : 70; // Espaciado entre filas
     const y = baseY + (row * rowSpacing);
     
     return { x, y };
