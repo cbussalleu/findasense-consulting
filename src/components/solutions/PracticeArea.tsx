@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ArrowRight } from 'lucide-react';
@@ -14,6 +13,7 @@ interface PracticeAreaProps {
   totalItems: number;
   hoveredPractice: string | null;
   setHoveredPractice: (id: string | null) => void;
+  consultingCapabilities: string[];
 }
 
 export const PracticeArea = ({ 
@@ -21,7 +21,8 @@ export const PracticeArea = ({
   index, 
   totalItems, 
   hoveredPractice, 
-  setHoveredPractice 
+  setHoveredPractice,
+  consultingCapabilities
 }: PracticeAreaProps) => {
   const isMobile = useIsMobile();
   
@@ -36,7 +37,6 @@ export const PracticeArea = ({
     return { x, y };
   };
 
-  // Calculate base radius dynamically based on screen width
   const getResponsiveRadius = () => {
     if (isMobile) return 90;
     const width = typeof window !== 'undefined' ? window.innerWidth : 1024;
@@ -50,25 +50,10 @@ export const PracticeArea = ({
   const radius = getResponsiveRadius();
   const { x, y } = getPosition(angle, radius);
   
-  // Increase the size of practice circles
   const circleSize = isMobile ? "w-24 h-24" : "w-28 h-28";
 
   const handleClick = () => {
-    // Toggle the current practice or close all if this one was already active
     setHoveredPractice(hoveredPractice === practice.id ? null : practice.id);
-  };
-
-  const handleMouseEnter = () => {
-    if (!isMobile) {
-      setHoveredPractice(practice.id);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isMobile) {
-      // Only hide on mouse leave if not clicked (mobile behavior)
-      // We keep the hover state on desktop for a better UX
-    }
   };
 
   const showDetails = hoveredPractice === practice.id;
@@ -89,8 +74,6 @@ export const PracticeArea = ({
         boxShadow: hoveredPractice === practice.id ? "0 10px 25px rgba(0,0,0,0.3)" : "0 4px 12px rgba(0,0,0,0.2)"
       }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
       <span className="text-xs sm:text-sm font-medium text-center px-1">{practice.name}</span>
