@@ -92,10 +92,10 @@ export const SolutionsCapabilitiesSection = () => {
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
-        {/* Sección de capacidades con altura fija para evitar saltos en la página */}
-        <div className="text-center relative" style={{ marginBottom: "130px" }}>
+        {/* Contenedor principal con espacio reducido */}
+        <div className="text-center relative" style={{ marginBottom: "70px" }}>
           {/* Badge "Capacidades Consulting" */}
-          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle mb-16">
+          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle mb-8">
             <span className="mr-2 animate-pulse">●</span>
             <span>Capacidades Consulting</span>
           </div>
@@ -135,7 +135,8 @@ export const SolutionsCapabilitiesSection = () => {
           </div>
         </div>
         
-        <div className="relative flex flex-col items-center">
+        {/* Círculos que se muestran más arriba en la página */}
+        <div className="relative flex flex-col items-center" style={{ marginTop: "-80px" }}>
           {/* Círculos en disposición circular y capacidades animadas */}
           <div className="relative w-full h-[500px] flex items-center justify-center">
             <div className="absolute inset-0 flex items-center justify-center">
