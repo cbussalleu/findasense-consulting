@@ -13,7 +13,9 @@ interface PracticeAreaProps {
   totalItems: number;
   hoveredPractice: string | null;
   setHoveredPractice: (id: string | null) => void;
-  consultingCapabilities: string[];
+  getDistributionAngle: (index: number, total: number) => number;
+  getPosition: (angle: number, radius: number) => { x: number, y: number };
+  getResponsiveRadius: () => number;
 }
 
 export const PracticeArea = ({ 
@@ -22,44 +24,12 @@ export const PracticeArea = ({
   totalItems, 
   hoveredPractice, 
   setHoveredPractice,
-  consultingCapabilities
+  getDistributionAngle,
+  getPosition,
+  getResponsiveRadius
 }: PracticeAreaProps) => {
   const isMobile = useIsMobile();
   
-  // Función para calcular el ángulo de distribución
-  const getDistributionAngle = (index: number, total: number) => {
-    // Distribución circular uniforme - 360 grados divididos entre el número de elementos
-    const angleStep = 360 / total;
-    // Offset inicial para posicionar el primer elemento en la parte superior
-    const startAngle = -90; // -90 grados es la parte superior
-    return startAngle + (angleStep * index);
-  };
-
-  // Función para calcular posición X,Y basada en ángulo y radio
-  const getPosition = (angle: number, radius: number) => {
-    // Conversión de ángulos a radianes para cálculos trigonométricos
-    const radians = (angle * Math.PI) / 180;
-    // Cálculo de coordenadas X e Y usando funciones trigonométricas
-    const x = Math.cos(radians) * radius;
-    const y = Math.sin(radians) * radius;
-    return { x, y };
-  };
-
-  // Función para obtener radio responsivo según tamaño de pantalla
-  const getResponsiveRadius = () => {
-    if (isMobile) return 120;
-    
-    // Fallback para SSR donde window no está disponible
-    if (typeof window === 'undefined') return 180;
-    
-    const width = window.innerWidth;
-    // Escala de radios según tamaño de pantalla
-    if (width < 768) return 140;
-    if (width < 1024) return 160;
-    if (width < 1280) return 180;
-    return 200;
-  };
-
   // Cálculo de posición para este círculo específico
   const angle = getDistributionAngle(index, totalItems);
   const radius = getResponsiveRadius();
