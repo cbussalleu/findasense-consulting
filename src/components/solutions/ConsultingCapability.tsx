@@ -50,9 +50,8 @@ export const ConsultingCapability = ({
     const centerOffset = spacing * (columns - 1) / 2;
     const x = (col * spacing) - centerOffset;
     
-    // AJUSTAMOS: valores más moderados para no chocar con el título
-    // pero aún manteniendo distancia de los círculos
-    const baseY = isMobile ? -220 : -250;
+    // REDUCIMOS los valores negativos para acercar las capacidades al badge
+    const baseY = isMobile ? -170 : -200; // Valores menos negativos = más cerca del badge
     const rowSpacing = isMobile ? 70 : 80;
     const y = baseY + (row * rowSpacing);
     
@@ -100,7 +99,7 @@ export const ConsultingCapability = ({
         top: `calc(50% + ${initialY}px)`,
         left: `calc(50% + ${initialX}px)`,
         transform: "translate(-50%, -50%)",
-        zIndex: 40 // Alto, pero no tan alto como el título
+        zIndex: 40
       }}
       animate={{
         top: `calc(50% + ${finalY}px)`,
