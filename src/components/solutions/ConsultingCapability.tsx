@@ -12,6 +12,8 @@ interface ConsultingCapabilityProps {
     color: string;
     subsets: string[];
   }>;
+  badgePosition: { top: number; height: number };
+  spacingBetweenGroups: number;
 }
 
 export const ConsultingCapability = ({ 
@@ -19,7 +21,9 @@ export const ConsultingCapability = ({
   index, 
   totalItems, 
   hoveredPractice,
-  practiceAreas
+  practiceAreas,
+  badgePosition,
+  spacingBetweenGroups
 }: ConsultingCapabilityProps) => {
   const isMobile = useIsMobile();
   
@@ -50,11 +54,18 @@ export const ConsultingCapability = ({
     const centerOffset = spacing * (columns - 1) / 2;
     const x = (col * spacing) - centerOffset;
     
-    // CLAVE: Aumentamos drásticamente la separación vertical para evitar superposición
-    // con los círculos en todas las resoluciones
-    const baseY = isMobile ? -350 : -420; // Valores mucho más altos
+    // Ahora calculamos la posición Y relativa al badge
+    // Usamos un cálculo de posiciones relativas, no valores fijos
+    const badgeBottomPosition = badgePosition.top + badgePosition.height;
+    const capabilitiesTopPosition = badgeBottomPosition + spacingBetweenGroups;
+    
+    // Convertimos a coordenadas relativas al centro del contenedor (donde 0 es el centro)
+    const containerCenter = window.innerHeight / 2;
+    const relativeY = capabilitiesTopPosition - containerCenter;
+    
+    // Ajustamos según la fila
     const rowSpacing = isMobile ? 70 : 80;
-    const y = baseY + (row * rowSpacing);
+    const y = relativeY + (row * rowSpacing);
     
     return { x, y };
   };
