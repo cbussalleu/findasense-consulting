@@ -23,59 +23,63 @@ export const ConsultingCapability = ({
 }: ConsultingCapabilityProps) => {
   const isMobile = useIsMobile();
   
-  // Calculate initial position for capabilities
+  // Distribución inicial en grid para las capacidades
   const getHorizontalPosition = () => {
-    // Distribución optimizada para coherencia visual (principio Gestalt)
+    // Distribución optimizada para coherencia visual
     const columns = 3;
     
     // Determinar fila y columna
     const row = Math.floor(index / columns);
     const col = index % columns;
     
-    // Espacio horizontal basado en investigación de legibilidad óptima
-    const spacing = isMobile ? 120 : 180;
+    // Espaciado horizontal responsivo
+    const spacing = isMobile ? 100 : 150;
     const centerOffset = spacing * (columns - 1) / 2;
     const x = (col * spacing) - centerOffset;
     
-    // IMPORTANTE: Estamos usando un valor de base relativo al centro
-    // Para la posición inicial, el centro es el punto de referencia
-    // Nielsen recomienda -100px a -120px de separación para elementos relacionados
-    const baseY = isMobile ? -100 : -120;
-    const rowSpacing = isMobile ? 60 : 70;
+    // Posición vertical con espaciado adecuado
+    const baseY = isMobile ? -120 : -150;
+    const rowSpacing = isMobile ? 50 : 60;
     const y = baseY + (row * rowSpacing);
     
     return { x, y };
   };
 
-  // Initial position
+  // Función para calcular ángulo de distribución de círculos
+  const getDistributionAngle = (index: number, total: number) => {
+    const startAngle = -90; // -90 grados es la parte superior
+    const angleStep = 360 / total;
+    return startAngle + (angleStep * index);
+  };
+
+  // Cálculo de posición inicial en grid
   const position = getHorizontalPosition();
   const initialX = position.x;
   const initialY = position.y;
   
-  // When a practice is hovered, animate to that practice
+  // Cálculo de posición para órbita cuando se selecciona un círculo
   let finalX = initialX;
   let finalY = initialY;
   
   if (hoveredPractice) {
-    // Find the hovered practice's position
+    // Encontrar el índice del círculo seleccionado
     const hoveredIndex = practiceAreas.findIndex(p => p.id === hoveredPractice);
     if (hoveredIndex !== -1) {
-      // Calculate angle for practice position
-      const angleStep = 360 / practiceAreas.length;
-      const practiceAngle = angleStep * hoveredIndex;
+      // Calcular ángulo y posición del círculo seleccionado
+      const practiceAngle = getDistributionAngle(hoveredIndex, practiceAreas.length);
+      const practiceRadius = isMobile ? 120 : 180;
+      const practiceRadians = (practiceAngle * Math.PI) / 180;
+      const practiceX = Math.cos(practiceRadians) * practiceRadius;
+      const practiceY = Math.sin(practiceRadians) * practiceRadius;
       
-      // Calculate practice position - punto central del círculo
-      const practiceRadius = isMobile ? 90 : 170;
-      const practiceX = Math.cos((practiceAngle * Math.PI) / 180) * practiceRadius;
-      const practiceY = Math.sin((practiceAngle * Math.PI) / 180) * practiceRadius;
+      // Calcular posición orbital alrededor del círculo seleccionado
+      const orbitRadius = isMobile ? 70 : 100;
+      const orbitAngle = (360 / totalItems * index) + practiceAngle;
+      const orbitRadians = (orbitAngle * Math.PI) / 180;
+      const orbitX = Math.cos(orbitRadians) * orbitRadius;
+      const orbitY = Math.sin(orbitRadians) * orbitRadius;
       
-      // Calculate orbit position around the hovered practice
-      const orbitRadius = isMobile ? 80 : 100;
-      const orbitAngle = 360 / totalItems * index;
-      const orbitX = Math.cos((orbitAngle * Math.PI) / 180) * orbitRadius;
-      const orbitY = Math.sin((orbitAngle * Math.PI) / 180) * orbitRadius;
-      
-      // Position capability to orbit around the hovered practice
+      // Posición final en órbita
       finalX = practiceX + orbitX;
       finalY = practiceY + orbitY;
     }
@@ -85,21 +89,20 @@ export const ConsultingCapability = ({
     <motion.div
       className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer border border-accent/20 capability-tag"
       style={{
-        // Usamos el mismo sistema de coordenadas para posición inicial y animación
         top: `calc(50% + ${initialY}px)`,
         left: `calc(50% + ${initialX}px)`,
         transform: "translate(-50%, -50%)",
         zIndex: 40
       }}
+      initial={{ opacity: 0, scale: 0.8 }}
       animate={{
-        // Consistencia en animaciones - fundamental según Material Design
+        opacity: 1,
         top: hoveredPractice ? `calc(50% + ${finalY}px)` : `calc(50% + ${initialY}px)`,
         left: hoveredPractice ? `calc(50% + ${finalX}px)` : `calc(50% + ${initialX}px)`,
         scale: hoveredPractice ? 1.1 : 1,
         boxShadow: hoveredPractice ? "0 0 15px rgba(79, 70, 229, 0.5)" : "none"
       }}
       transition={{ 
-        // Según Apple HIG, animaciones entre 300-500ms son óptimas para atención
         type: "spring", 
         stiffness: 100, 
         damping: 10,
