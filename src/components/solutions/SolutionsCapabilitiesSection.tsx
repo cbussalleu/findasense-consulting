@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { PracticeArea } from './PracticeArea';
 import { ConsultingCapability } from './ConsultingCapability';
@@ -7,10 +6,13 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 export const SolutionsCapabilitiesSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredPractice, setHoveredPractice] = useState<string | null>(null);
+  const [badgePosition, setBadgePosition] = useState({ top: 0, height: 0 });
   const isMobile = useIsMobile();
 
+  // Efecto para detectar cuando la sección es visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -33,6 +35,31 @@ export const SolutionsCapabilitiesSection = () => {
     };
   }, []);
 
+  // Efecto para medir la posición del badge "Capacidades Consulting"
+  useEffect(() => {
+    if (badgeRef.current && isVisible) {
+      const updateBadgePosition = () => {
+        const rect = badgeRef.current?.getBoundingClientRect();
+        if (rect) {
+          setBadgePosition({
+            top: rect.top,
+            height: rect.height
+          });
+        }
+      };
+
+      // Medimos la posición inicial
+      updateBadgePosition();
+      
+      // Actualizamos en caso de cambio de tamaño
+      window.addEventListener('resize', updateBadgePosition);
+      return () => window.removeEventListener('resize', updateBadgePosition);
+    }
+  }, [isVisible]);
+
+  // Cálculo de distancias entre grupos
+  const spacingBetweenGroups = isMobile ? 80 : 120; // Espacio entre badge y capacidades
+
   return (
     <section 
       id="solutions"
@@ -47,9 +74,12 @@ export const SolutionsCapabilitiesSection = () => {
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
-        {/* Legend for Consulting Capabilities */}
+        {/* Legend for Consulting Capabilities - Con ref para medir su posición */}
         <div className="text-center mb-8">
-          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
+          <div 
+            ref={badgeRef}
+            className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle"
+          >
             <span className="mr-2 animate-pulse">●</span>
             <span>Capacidades Consulting</span>
           </div>
@@ -70,7 +100,7 @@ export const SolutionsCapabilitiesSection = () => {
             ))}
           </div>
           
-          {/* Consulting capabilities - now positioned below the legend in organized rows */}
+          {/* Consulting capabilities - Con posiciones calculadas relativamente al badge */}
           <div className="w-full h-full">
             {consultingCapabilities.map((capability, index) => (
               <ConsultingCapability
@@ -80,6 +110,8 @@ export const SolutionsCapabilitiesSection = () => {
                 totalItems={consultingCapabilities.length}
                 hoveredPractice={hoveredPractice}
                 practiceAreas={practiceAreas}
+                badgePosition={badgePosition}
+                spacingBetweenGroups={spacingBetweenGroups}
               />
             ))}
           </div>
