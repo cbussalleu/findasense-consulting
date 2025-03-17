@@ -13,13 +13,9 @@ export const SolutionsCapabilitiesSection = () => {
 
   // Actualizamos isClickActive cuando cambia hoveredPractice
   useEffect(() => {
-    // Permitir un pequeño retraso antes de cambiar isClickActive
-    // para que la transición de capacidades sea más suave
     if (hoveredPractice !== null) {
-      // Si se selecciona una práctica, activar isClickActive inmediatamente
       setIsClickActive(true);
     } else {
-      // Si se deselecciona, esperar un poco para permitir la animación de regreso
       const timer = setTimeout(() => {
         setIsClickActive(false);
       }, 100);
@@ -51,18 +47,14 @@ export const SolutionsCapabilitiesSection = () => {
 
   // Función para calcular el ángulo de distribución
   const getDistributionAngle = (index: number, total: number) => {
-    // Distribución circular uniforme - 360 grados divididos entre el número de elementos
     const angleStep = 360 / total;
-    // Offset inicial para posicionar el primer elemento en la parte superior
     const startAngle = -90; // -90 grados es la parte superior
     return startAngle + (angleStep * index);
   };
 
   // Función para calcular posición X,Y basada en ángulo y radio
   const getPosition = (angle: number, radius: number) => {
-    // Conversión de ángulos a radianes para cálculos trigonométricos
     const radians = (angle * Math.PI) / 180;
-    // Cálculo de coordenadas X e Y usando funciones trigonométricas
     const x = Math.cos(radians) * radius;
     const y = Math.sin(radians) * radius;
     return { x, y };
@@ -72,11 +64,9 @@ export const SolutionsCapabilitiesSection = () => {
   const getResponsiveRadius = () => {
     if (isMobile) return 120;
     
-    // Fallback para SSR donde window no está disponible
     if (typeof window === 'undefined') return 180;
     
     const width = window.innerWidth;
-    // Escala de radios según tamaño de pantalla
     if (width < 768) return 140;
     if (width < 1024) return 160;
     if (width < 1280) return 180;
@@ -102,43 +92,47 @@ export const SolutionsCapabilitiesSection = () => {
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
-        {/* Badge "Capacidades Consulting" y capacidades fijas */}
-        <div className="text-center mb-16 relative">
-          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
+        {/* Sección de capacidades con altura fija para evitar saltos en la página */}
+        <div className="text-center relative" style={{ marginBottom: "130px" }}>
+          {/* Badge "Capacidades Consulting" */}
+          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle mb-16">
             <span className="mr-2 animate-pulse">●</span>
             <span>Capacidades Consulting</span>
           </div>
           
-          {/* Capacidades fijas con animación mejorada */}
-          <AnimatePresence>
-            {!isClickActive && (
-              <motion.div 
-                className="w-full relative mt-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
-                  {consultingCapabilities.map((capability, index) => (
-                    <motion.div 
-                      key={`fixed-${capability}`}
-                      className="bg-accent/10 text-accent px-3 py-1.5 rounded-full text-xs font-mono cursor-pointer border border-accent/30 capability-tag shadow-sm hover:bg-accent/20 transition-all duration-300 text-center"
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ 
-                        duration: 0.3, 
-                        delay: index * 0.05,
-                        ease: "easeOut" 
-                      }}
-                    >
-                      {capability}
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Contenedor con altura fija para ambos grupos de capacidades */}
+          <div className="relative w-full" style={{ height: "120px" }}>
+            {/* Capacidades fijas con animación mejorada */}
+            <AnimatePresence>
+              {!isClickActive && (
+                <motion.div 
+                  className="absolute w-full left-0 right-0"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
+                    {consultingCapabilities.map((capability, index) => (
+                      <motion.div 
+                        key={`fixed-${capability}`}
+                        className="bg-accent/10 text-accent px-3 py-1.5 rounded-full text-xs font-mono cursor-pointer border border-accent/30 capability-tag shadow-sm hover:bg-accent/20 transition-all duration-300 text-center"
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ 
+                          duration: 0.3, 
+                          delay: index * 0.05,
+                          ease: "easeOut" 
+                        }}
+                      >
+                        {capability}
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
         
         <div className="relative flex flex-col items-center">
@@ -167,13 +161,12 @@ export const SolutionsCapabilitiesSection = () => {
                   const finalY = practiceY + orbitY;
                   
                   // Posición inicial "simulando" venir desde la posición del grid
-                  // Usamos constantes aproximadas basadas en la posición del grid
                   const columns = 3;
                   const column = index % columns;
                   const row = Math.floor(index / columns);
                   
                   const gridX = -150 + (column * 150);
-                  const gridY = 0 + (row * 50);
+                  const gridY = -150 + (row * 50);
                   
                   return (
                     <motion.div
