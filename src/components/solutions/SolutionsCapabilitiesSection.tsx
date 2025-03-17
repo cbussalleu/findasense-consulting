@@ -4,7 +4,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { PracticeArea } from './PracticeArea';
-import { ConsultingCapability } from './ConsultingCapability';
 
 export const SolutionsCapabilitiesSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -39,38 +38,44 @@ export const SolutionsCapabilitiesSection = () => {
     };
   }, []);
 
+  // Función para calcular el ángulo de distribución
+  const getDistributionAngle = (index: number, total: number) => {
+    // Distribución circular uniforme - 360 grados divididos entre el número de elementos
+    const angleStep = 360 / total;
+    // Offset inicial para posicionar el primer elemento en la parte superior
+    const startAngle = -90; // -90 grados es la parte superior
+    return startAngle + (angleStep * index);
+  };
+
+  // Función para calcular posición X,Y basada en ángulo y radio
+  const getPosition = (angle: number, radius: number) => {
+    // Conversión de ángulos a radianes para cálculos trigonométricos
+    const radians = (angle * Math.PI) / 180;
+    // Cálculo de coordenadas X e Y usando funciones trigonométricas
+    const x = Math.cos(radians) * radius;
+    const y = Math.sin(radians) * radius;
+    return { x, y };
+  };
+
+  // Función para obtener radio responsivo según tamaño de pantalla
+  const getResponsiveRadius = () => {
+    if (isMobile) return 120;
+    
+    // Fallback para SSR donde window no está disponible
+    if (typeof window === 'undefined') return 180;
+    
+    const width = window.innerWidth;
+    // Escala de radios según tamaño de pantalla
+    if (width < 768) return 140;
+    if (width < 1024) return 160;
+    if (width < 1280) return 180;
+    return 200;
+  };
+
   // Manejador para seleccionar/deseleccionar círculos
   const handlePracticeSelection = (practiceId: string | null) => {
     setHoveredPractice(hoveredPractice === practiceId ? null : practiceId);
   };
-
-  // Función para calcular posición de círculos en formación circular
-  const getCirclePosition = (index: number, totalItems: number) => {
-    const angleStep = 360 / totalItems;
-    const angle = angleStep * index;
-    const radius = isMobile ? 110 : 180;
-    const x = Math.cos((angle * Math.PI) / 180) * radius;
-    const y = Math.sin((angle * Math.PI) / 180) * radius;
-    return { x, y };
-  };
-
-  // Función para calcular posición de capacidades alrededor de un círculo
-  const getCapabilityOrbitPosition = (capIndex: number, practiceIndex: number) => {
-    if (!hoveredPractice) return null;
-    
-    const totalCaps = consultingCapabilities.length;
-    const { x: practiceX, y: practiceY } = getCirclePosition(practiceIndex, practiceAreas.length);
-    
-    const orbitRadius = isMobile ? 80 : 100;
-    const orbitAngle = 360 / totalCaps * capIndex;
-    const orbitX = Math.cos((orbitAngle * Math.PI) / 180) * orbitRadius;
-    const orbitY = Math.sin((orbitAngle * Math.PI) / 180) * orbitRadius;
-    
-    return {
-      x: practiceX + orbitX,
-      y: practiceY + orbitY
-    };
-  }
 
   return (
     <section 
@@ -109,23 +114,66 @@ export const SolutionsCapabilitiesSection = () => {
         </div>
         
         <div className="relative flex flex-col items-center">
-          {/* Capacidades animadas (solo visibles al hacer clic) */}
-          <div className={`w-full h-40 relative mb-6 mt-4 transition-opacity duration-500 ${isClickActive ? 'opacity-100' : 'opacity-0'}`}>
-            {consultingCapabilities.map((capability, index) => (
-              <ConsultingCapability
-                key={capability}
-                capability={capability}
-                index={index}
-                totalItems={consultingCapabilities.length}
-                hoveredPractice={hoveredPractice}
-                practiceAreas={practiceAreas}
-              />
-            ))}
-          </div>
-          
-          {/* Círculos en disposición circular */}
-          <div className="relative w-full h-[450px] flex items-center justify-center">
+          {/* Círculos en disposición circular y capacidades animadas */}
+          <div className="relative w-full h-[500px] flex items-center justify-center">
             <div className="absolute inset-0 flex items-center justify-center">
+              {/* Capacidades animadas en forma orbital */}
+              {isClickActive && consultingCapabilities.map((capability, index) => {
+                // Solo mostrar cuando hay un círculo seleccionado
+                if (!hoveredPractice) return null;
+                
+                // Encontrar el índice del círculo seleccionado
+                const hoveredIndex = practiceAreas.findIndex(p => p.id === hoveredPractice);
+                if (hoveredIndex === -1) return null;
+                
+                // Calcular ángulo y posición del círculo seleccionado
+                const practiceAngle = getDistributionAngle(hoveredIndex, practiceAreas.length);
+                const practiceRadius = getResponsiveRadius();
+                const { x: practiceX, y: practiceY } = getPosition(practiceAngle, practiceRadius);
+                
+                // Calcular posición orbital alrededor del círculo seleccionado
+                const orbitRadius = isMobile ? 70 : 100;
+                const orbitAngle = (360 / consultingCapabilities.length * index);
+                const { x: orbitX, y: orbitY } = getPosition(orbitAngle, orbitRadius);
+                
+                // Posición final en órbita
+                const finalX = practiceX + orbitX;
+                const finalY = practiceY + orbitY;
+                
+                return (
+                  <motion.div
+                    key={`orbit-${capability}`}
+                    className="absolute bg-accent/10 text-accent px-3 py-1.5 rounded-full text-xs font-mono cursor-pointer border border-accent/30 capability-tag shadow-sm hover:bg-accent/20 transition-all duration-300"
+                    initial={{ 
+                      opacity: 0,
+                      x: 0, 
+                      y: -200,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      x: finalX,
+                      y: finalY,
+                      scale: 1.1,
+                      boxShadow: "0 0 15px rgba(79, 70, 229, 0.5)"
+                    }}
+                    transition={{ 
+                      type: "spring", 
+                      stiffness: 200, 
+                      damping: 20,
+                      delay: index * 0.05 
+                    }}
+                    style={{
+                      zIndex: 40,
+                    }}
+                    whileHover={{ scale: 1.15 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {capability}
+                  </motion.div>
+                );
+              })}
+              
+              {/* Círculos de práctica */}
               {practiceAreas.map((practice, index) => (
                 <PracticeArea
                   key={practice.id}
@@ -134,7 +182,9 @@ export const SolutionsCapabilitiesSection = () => {
                   totalItems={practiceAreas.length}
                   hoveredPractice={hoveredPractice}
                   setHoveredPractice={handlePracticeSelection}
-                  consultingCapabilities={consultingCapabilities}
+                  getDistributionAngle={getDistributionAngle}
+                  getPosition={getPosition}
+                  getResponsiveRadius={getResponsiveRadius}
                 />
               ))}
             </div>
