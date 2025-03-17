@@ -6,13 +6,10 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 export const SolutionsCapabilitiesSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const badgeRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredPractice, setHoveredPractice] = useState<string | null>(null);
-  const [badgePosition, setBadgePosition] = useState({ top: 0, height: 0 });
   const isMobile = useIsMobile();
 
-  // Efecto para detectar cuando la sección es visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -35,31 +32,6 @@ export const SolutionsCapabilitiesSection = () => {
     };
   }, []);
 
-  // Efecto para medir la posición del badge "Capacidades Consulting"
-  useEffect(() => {
-    if (badgeRef.current && isVisible) {
-      const updateBadgePosition = () => {
-        const rect = badgeRef.current?.getBoundingClientRect();
-        if (rect) {
-          setBadgePosition({
-            top: rect.top,
-            height: rect.height
-          });
-        }
-      };
-
-      // Medimos la posición inicial
-      updateBadgePosition();
-      
-      // Actualizamos en caso de cambio de tamaño
-      window.addEventListener('resize', updateBadgePosition);
-      return () => window.removeEventListener('resize', updateBadgePosition);
-    }
-  }, [isVisible]);
-
-  // Cálculo de distancias entre grupos
-  const spacingBetweenGroups = isMobile ? 80 : 120; // Espacio entre badge y capacidades
-
   return (
     <section 
       id="solutions"
@@ -74,34 +46,17 @@ export const SolutionsCapabilitiesSection = () => {
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
-        {/* Legend for Consulting Capabilities - Con ref para medir su posición */}
+        {/* Legend for Consulting Capabilities */}
         <div className="text-center mb-8">
-          <div 
-            ref={badgeRef}
-            className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle"
-          >
+          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
             <span className="mr-2 animate-pulse">●</span>
             <span>Capacidades Consulting</span>
           </div>
         </div>
         
-        <div className="relative w-full mx-auto" style={{ height: isMobile ? '500px' : '600px' }}>
-          {/* Practice Areas - centered in the middle */}
-          <div className="w-full h-full flex justify-center items-center">
-            {practiceAreas.map((practice, index) => (
-              <PracticeArea
-                key={practice.id}
-                practice={practice}
-                index={index}
-                totalItems={practiceAreas.length}
-                hoveredPractice={hoveredPractice}
-                setHoveredPractice={setHoveredPractice}
-              />
-            ))}
-          </div>
-          
-          {/* Consulting capabilities - Con posiciones calculadas relativamente al badge */}
-          <div className="w-full h-full">
+        <div className="relative w-full mx-auto" style={{ height: isMobile ? '600px' : '700px' }}>
+          {/* Consulting capabilities - mantenemos estas arriba */}
+          <div className="w-full">
             {consultingCapabilities.map((capability, index) => (
               <ConsultingCapability
                 key={capability}
@@ -110,8 +65,27 @@ export const SolutionsCapabilitiesSection = () => {
                 totalItems={consultingCapabilities.length}
                 hoveredPractice={hoveredPractice}
                 practiceAreas={practiceAreas}
-                badgePosition={badgePosition}
-                spacingBetweenGroups={spacingBetweenGroups}
+              />
+            ))}
+          </div>
+          
+          {/* Practice Areas - MOVIDAS MÁS ABAJO */}
+          <div 
+            className="w-full absolute bottom-0 left-0 right-0 flex justify-center items-center"
+            style={{ 
+              height: isMobile ? '400px' : '450px',
+              // Con esto movemos los círculos más abajo
+              transform: 'translateY(30px)' 
+            }}
+          >
+            {practiceAreas.map((practice, index) => (
+              <PracticeArea
+                key={practice.id}
+                practice={practice}
+                index={index}
+                totalItems={practiceAreas.length}
+                hoveredPractice={hoveredPractice}
+                setHoveredPractice={setHoveredPractice}
               />
             ))}
           </div>
