@@ -1,39 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
 import { practiceAreas, consultingCapabilities } from './data';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { PracticeArea } from './PracticeArea';
 
 export const SolutionsCapabilitiesSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const badgeRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredPractice, setHoveredPractice] = useState<string | null>(null);
+  const [isClickActive, setIsClickActive] = useState(false);
   const isMobile = useIsMobile();
-  const [badgePosition, setBadgePosition] = useState({ top: 0, left: 0 });
 
-  // Actualizar la posición del badge cuando cambia el tamaño de la ventana
+  // Actualizamos isClickActive cuando cambia hoveredPractice
   useEffect(() => {
-    const updateBadgePosition = () => {
-      if (badgeRef.current) {
-        const rect = badgeRef.current.getBoundingClientRect();
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        setBadgePosition({
-          top: rect.top + scrollTop,
-          left: rect.left + rect.width / 2
-        });
-      }
-    };
+    // Permitir un pequeño retraso antes de cambiar isClickActive
+    // para que la transición de capacidades sea más suave
+    if (hoveredPractice !== null) {
+      // Si se selecciona una práctica, activar isClickActive inmediatamente
+      setIsClickActive(true);
+    } else {
+      // Si se deselecciona, esperar un poco para permitir la animación de regreso
+      const timer = setTimeout(() => {
+        setIsClickActive(false);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [hoveredPractice]);
 
-    // Actualizar posición inicial
-    updateBadgePosition();
-
-    // Actualizar cuando cambia el tamaño de la ventana
-    window.addEventListener('resize', updateBadgePosition);
-    return () => window.removeEventListener('resize', updateBadgePosition);
-  }, []);
-
-  // Intersection Observer para detectar cuando la sección es visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -58,14 +51,18 @@ export const SolutionsCapabilitiesSection = () => {
 
   // Función para calcular el ángulo de distribución
   const getDistributionAngle = (index: number, total: number) => {
+    // Distribución circular uniforme - 360 grados divididos entre el número de elementos
     const angleStep = 360 / total;
+    // Offset inicial para posicionar el primer elemento en la parte superior
     const startAngle = -90; // -90 grados es la parte superior
     return startAngle + (angleStep * index);
   };
 
   // Función para calcular posición X,Y basada en ángulo y radio
   const getPosition = (angle: number, radius: number) => {
+    // Conversión de ángulos a radianes para cálculos trigonométricos
     const radians = (angle * Math.PI) / 180;
+    // Cálculo de coordenadas X e Y usando funciones trigonométricas
     const x = Math.cos(radians) * radius;
     const y = Math.sin(radians) * radius;
     return { x, y };
@@ -86,57 +83,9 @@ export const SolutionsCapabilitiesSection = () => {
     return 200;
   };
 
-  // Función para calcular posiciones de grid (estado inicial)
-  const getGridPosition = (index: number) => {
-    // Calcular posición absoluta relativa al badge
-    const columns = 3;
-    const column = index % columns;
-    const row = Math.floor(index / columns);
-    
-    // Ajustes para posicionar las capacidades en forma de grid debajo del badge
-    const columnWidth = isMobile ? 105 : 160;
-    const startX = (columns * columnWidth) / -2 + (columnWidth / 2); // Centrar el grid
-    const startY = 60; // Distancia debajo del badge
-    const rowHeight = 50;
-    
-    // Posición relativa al centro de la sección
-    const sectionCenterX = window.innerWidth / 2;
-    const gridX = startX + (column * columnWidth);
-    const gridY = startY + (row * rowHeight);
-    
-    // Convertir posición relativa al badge a posición absoluta
-    // Pero si badgePosition.left es 0 (no inicializado), usar posición centrada directa
-    const offsetX = badgePosition.left ? badgePosition.left - sectionCenterX : 0;
-    
-    return {
-      x: gridX + offsetX,
-      y: gridY
-    };
-  };
-
-  // Función para calcular posiciones orbitales (estado final)
-  const getOrbitPosition = (capabilityIndex: number, practiceId: string) => {
-    if (!practiceId) return getGridPosition(capabilityIndex); // Volver a posición de grid si no hay selección
-    
-    // Encontrar el índice del área de práctica seleccionada
-    const practiceIndex = practiceAreas.findIndex(p => p.id === practiceId);
-    if (practiceIndex === -1) return getGridPosition(capabilityIndex);
-    
-    // Calcular posición del círculo seleccionado
-    const practiceAngle = getDistributionAngle(practiceIndex, practiceAreas.length);
-    const practiceRadius = getResponsiveRadius();
-    const { x: practiceX, y: practiceY } = getPosition(practiceAngle, practiceRadius);
-    
-    // Calcular posición orbital alrededor del área de práctica seleccionada
-    const orbitRadius = isMobile ? 70 : 100;
-    const orbitAngle = (360 / consultingCapabilities.length * capabilityIndex);
-    const { x: orbitX, y: orbitY } = getPosition(orbitAngle, orbitRadius);
-    
-    // Posición final en órbita
-    return {
-      x: practiceX + orbitX,
-      y: practiceY + orbitY
-    };
+  // Manejador para seleccionar/deseleccionar círculos
+  const handlePracticeSelection = (practiceId: string | null) => {
+    setHoveredPractice(hoveredPractice === practiceId ? null : practiceId);
   };
 
   return (
@@ -153,66 +102,123 @@ export const SolutionsCapabilitiesSection = () => {
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
-        {/* Badge "Capacidades Consulting" con referencia para posicionamiento */}
-        <div className="text-center mb-24 relative">
-          <div 
-            ref={badgeRef}
-            className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle"
-          >
+        {/* Badge "Capacidades Consulting" y capacidades fijas */}
+        <div className="text-center mb-16 relative">
+          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
             <span className="mr-2 animate-pulse">●</span>
             <span>Capacidades Consulting</span>
           </div>
+          
+          {/* Capacidades fijas con animación mejorada */}
+          <AnimatePresence>
+            {!isClickActive && (
+              <motion.div 
+                className="w-full relative mt-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
+                  {consultingCapabilities.map((capability, index) => (
+                    <motion.div 
+                      key={`fixed-${capability}`}
+                      className="bg-accent/10 text-accent px-3 py-1.5 rounded-full text-xs font-mono cursor-pointer border border-accent/30 capability-tag shadow-sm hover:bg-accent/20 transition-all duration-300 text-center"
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ 
+                        duration: 0.3, 
+                        delay: index * 0.05,
+                        ease: "easeOut" 
+                      }}
+                    >
+                      {capability}
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
         
         <div className="relative flex flex-col items-center">
           {/* Círculos en disposición circular y capacidades animadas */}
           <div className="relative w-full h-[500px] flex items-center justify-center">
             <div className="absolute inset-0 flex items-center justify-center">
-              {/* Capacidades unificadas con animación entre estados */}
-              {consultingCapabilities.map((capability, index) => {
-                // Calcular posición de grid (estado inicial)
-                const gridPos = getGridPosition(index);
-                
-                // Calcular posición orbital (cuando hay un practice seleccionado)
-                const orbitPos = getOrbitPosition(index, hoveredPractice || "");
-                
-                // Determinar posición final basada en si hay un practice seleccionado
-                const finalPos = hoveredPractice ? orbitPos : gridPos;
-                
-                return (
-                  <motion.div
-                    key={`capability-${capability}`}
-                    className="absolute bg-accent/10 text-accent px-3 py-1.5 rounded-full text-xs font-mono cursor-pointer border border-accent/30 capability-tag shadow-sm hover:bg-accent/20 transition-colors duration-300"
-                    initial={{ 
-                      opacity: 0,
-                      x: gridPos.x,
-                      y: gridPos.y,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      x: finalPos.x,
-                      y: finalPos.y,
-                      scale: hoveredPractice ? 1.1 : 1,
-                      boxShadow: hoveredPractice 
-                        ? "0 0 15px rgba(79, 70, 229, 0.3)" 
-                        : "0 0 5px rgba(79, 70, 229, 0.1)"
-                    }}
-                    transition={{ 
-                      type: "spring", 
-                      stiffness: 120, 
-                      damping: 20,
-                      delay: index * 0.03
-                    }}
-                    style={{
-                      zIndex: 40,
-                    }}
-                    whileHover={{ scale: hoveredPractice ? 1.15 : 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {capability}
-                  </motion.div>
-                );
-              })}
+              {/* Capacidades animadas en forma orbital con animación mejorada */}
+              <AnimatePresence>
+                {isClickActive && hoveredPractice && consultingCapabilities.map((capability, index) => {
+                  // Encontrar el índice del círculo seleccionado
+                  const hoveredIndex = practiceAreas.findIndex(p => p.id === hoveredPractice);
+                  if (hoveredIndex === -1) return null;
+                  
+                  // Calcular ángulo y posición del círculo seleccionado
+                  const practiceAngle = getDistributionAngle(hoveredIndex, practiceAreas.length);
+                  const practiceRadius = getResponsiveRadius();
+                  const { x: practiceX, y: practiceY } = getPosition(practiceAngle, practiceRadius);
+                  
+                  // Calcular posición orbital alrededor del círculo seleccionado
+                  const orbitRadius = isMobile ? 70 : 100;
+                  const orbitAngle = (360 / consultingCapabilities.length * index);
+                  const { x: orbitX, y: orbitY } = getPosition(orbitAngle, orbitRadius);
+                  
+                  // Posición final en órbita
+                  const finalX = practiceX + orbitX;
+                  const finalY = practiceY + orbitY;
+                  
+                  // Posición inicial "simulando" venir desde la posición del grid
+                  // Usamos constantes aproximadas basadas en la posición del grid
+                  const columns = 3;
+                  const column = index % columns;
+                  const row = Math.floor(index / columns);
+                  
+                  const gridX = -150 + (column * 150);
+                  const gridY = 0 + (row * 50);
+                  
+                  return (
+                    <motion.div
+                      key={`orbit-${capability}`}
+                      className="absolute bg-accent/10 text-accent px-3 py-1.5 rounded-full text-xs font-mono cursor-pointer border border-accent/30 capability-tag shadow-sm hover:bg-accent/20 transition-colors duration-300"
+                      initial={{ 
+                        opacity: 0,
+                        x: gridX, 
+                        y: gridY,
+                        scale: 1
+                      }}
+                      animate={{
+                        opacity: 1,
+                        x: finalX,
+                        y: finalY,
+                        scale: 1.1,
+                        boxShadow: "0 0 15px rgba(79, 70, 229, 0.3)"
+                      }}
+                      exit={{
+                        opacity: 0,
+                        x: gridX,
+                        y: gridY,
+                        scale: 1,
+                        transition: { 
+                          duration: 0.3,
+                          delay: 0 
+                        }
+                      }}
+                      transition={{ 
+                        type: "spring", 
+                        stiffness: 120, 
+                        damping: 20,
+                        delay: index * 0.03 
+                      }}
+                      style={{
+                        zIndex: 40,
+                      }}
+                      whileHover={{ scale: 1.15 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {capability}
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
               
               {/* Círculos de práctica */}
               {practiceAreas.map((practice, index) => (
@@ -222,7 +228,7 @@ export const SolutionsCapabilitiesSection = () => {
                   index={index}
                   totalItems={practiceAreas.length}
                   hoveredPractice={hoveredPractice}
-                  setHoveredPractice={setHoveredPractice}
+                  setHoveredPractice={handlePracticeSelection}
                   getDistributionAngle={getDistributionAngle}
                   getPosition={getPosition}
                   getResponsiveRadius={getResponsiveRadius}
