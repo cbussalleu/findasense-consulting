@@ -37,8 +37,8 @@ export const ConsultingCapability = ({
     const centerOffset = spacing * (columns - 1) / 2;
     const x = (col * spacing) - centerOffset;
     
-    // Posición vertical con espaciado adecuado
-    const baseY = isMobile ? -120 : -150;
+    // Posición vertical con espaciado adecuado - mucho más arriba para evitar superposición
+    const baseY = isMobile ? -240 : -280; // Mucho más arriba que antes
     const rowSpacing = isMobile ? 50 : 60;
     const y = baseY + (row * rowSpacing);
     
@@ -87,7 +87,7 @@ export const ConsultingCapability = ({
 
   return (
     <motion.div
-      className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer border border-accent/20 capability-tag"
+      className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer border border-accent/20 capability-tag shadow-sm"
       style={{
         top: `calc(50% + ${initialY}px)`,
         left: `calc(50% + ${initialX}px)`,
