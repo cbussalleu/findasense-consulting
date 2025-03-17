@@ -77,16 +77,16 @@ export const SolutionsCapabilitiesSection = () => {
         </div>
         
         {/* Badge "Capacidades Consulting" */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-12">
           <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
             <span className="mr-2 animate-pulse">●</span>
             <span>Capacidades Consulting</span>
           </div>
         </div>
         
-        <div className="relative">
-          {/* Capacidades - ahora con mayor separación de los círculos */}
-          <div className="w-full mb-32"> {/* Aumentado el margen inferior */}
+        <div className="relative flex flex-col items-center">
+          {/* Capacidades debajo del badge */}
+          <div className="w-full h-[180px] relative mb-6 mt-4">
             {consultingCapabilities.map((capability, index) => (
               <ConsultingCapability
                 key={capability}
@@ -100,7 +100,7 @@ export const SolutionsCapabilitiesSection = () => {
           </div>
           
           {/* Círculos en disposición circular */}
-          <div className="relative w-full h-[400px]">
+          <div className="relative w-full h-[450px] flex items-center justify-center">
             <div className="absolute inset-0 flex items-center justify-center">
               {practiceAreas.map((practice, index) => (
                 <PracticeArea
