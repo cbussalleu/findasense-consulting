@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { practiceAreas, consultingCapabilities } from './data';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { PracticeArea } from './PracticeArea';
 
@@ -9,13 +8,9 @@ export const SolutionsCapabilitiesSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredPractice, setHoveredPractice] = useState<string | null>(null);
-  const [isClickActive, setIsClickActive] = useState(false);
   const isMobile = useIsMobile();
 
-  useEffect(() => {
-    setIsClickActive(hoveredPractice !== null);
-  }, [hoveredPractice]);
-
+  // Intersection Observer para detectar cuando la sección es visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -40,18 +35,14 @@ export const SolutionsCapabilitiesSection = () => {
 
   // Función para calcular el ángulo de distribución
   const getDistributionAngle = (index: number, total: number) => {
-    // Distribución circular uniforme - 360 grados divididos entre el número de elementos
     const angleStep = 360 / total;
-    // Offset inicial para posicionar el primer elemento en la parte superior
     const startAngle = -90; // -90 grados es la parte superior
     return startAngle + (angleStep * index);
   };
 
   // Función para calcular posición X,Y basada en ángulo y radio
   const getPosition = (angle: number, radius: number) => {
-    // Conversión de ángulos a radianes para cálculos trigonométricos
     const radians = (angle * Math.PI) / 180;
-    // Cálculo de coordenadas X e Y usando funciones trigonométricas
     const x = Math.cos(radians) * radius;
     const y = Math.sin(radians) * radius;
     return { x, y };
@@ -72,9 +63,48 @@ export const SolutionsCapabilitiesSection = () => {
     return 200;
   };
 
-  // Manejador para seleccionar/deseleccionar círculos
-  const handlePracticeSelection = (practiceId: string | null) => {
-    setHoveredPractice(hoveredPractice === practiceId ? null : practiceId);
+  // Función para calcular posiciones de grid (estado inicial)
+  const getGridPosition = (index: number) => {
+    // Grid de 3 columnas
+    const columns = 3;
+    const column = index % columns;
+    const row = Math.floor(index / columns);
+    
+    // Ajustes responsivos para posicionar el grid correctamente
+    const baseX = isMobile ? -100 : -150;
+    const baseY = -80;
+    const columnWidth = isMobile ? 100 : 150;
+    const rowHeight = 50;
+    
+    return {
+      x: baseX + (column * columnWidth),
+      y: baseY + (row * rowHeight)
+    };
+  };
+
+  // Función para calcular posiciones orbitales (estado final)
+  const getOrbitPosition = (capabilityIndex: number, practiceId: string) => {
+    if (!practiceId) return getGridPosition(capabilityIndex); // Volver a posición de grid si no hay selección
+    
+    // Encontrar el índice del área de práctica seleccionada
+    const practiceIndex = practiceAreas.findIndex(p => p.id === practiceId);
+    if (practiceIndex === -1) return getGridPosition(capabilityIndex);
+    
+    // Calcular posición del círculo seleccionado
+    const practiceAngle = getDistributionAngle(practiceIndex, practiceAreas.length);
+    const practiceRadius = getResponsiveRadius();
+    const { x: practiceX, y: practiceY } = getPosition(practiceAngle, practiceRadius);
+    
+    // Calcular posición orbital alrededor del área de práctica seleccionada
+    const orbitRadius = isMobile ? 70 : 100;
+    const orbitAngle = (360 / consultingCapabilities.length * capabilityIndex);
+    const { x: orbitX, y: orbitY } = getPosition(orbitAngle, orbitRadius);
+    
+    // Posición final en órbita
+    return {
+      x: practiceX + orbitX,
+      y: practiceY + orbitY
+    };
   };
 
   return (
@@ -91,25 +121,11 @@ export const SolutionsCapabilitiesSection = () => {
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
-        {/* Badge "Capacidades Consulting" y capacidades fijas */}
+        {/* Badge "Capacidades Consulting" */}
         <div className="text-center mb-12 relative">
           <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
             <span className="mr-2 animate-pulse">●</span>
             <span>Capacidades Consulting</span>
-          </div>
-          
-          {/* Capacidades fijas (siempre cerca del badge) */}
-          <div className={`w-full relative mt-6 transition-opacity duration-500 ${isClickActive ? 'opacity-0' : 'opacity-100'}`}>
-            <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
-              {consultingCapabilities.map((capability, index) => (
-                <div 
-                  key={`fixed-${capability}`}
-                  className="bg-accent/10 text-accent px-3 py-1.5 rounded-full text-xs font-mono cursor-pointer border border-accent/30 capability-tag shadow-sm hover:bg-accent/20 transition-all duration-300 text-center"
-                >
-                  {capability}
-                </div>
-              ))}
-            </div>
           </div>
         </div>
         
@@ -117,55 +133,45 @@ export const SolutionsCapabilitiesSection = () => {
           {/* Círculos en disposición circular y capacidades animadas */}
           <div className="relative w-full h-[500px] flex items-center justify-center">
             <div className="absolute inset-0 flex items-center justify-center">
-              {/* Capacidades animadas en forma orbital */}
-              {isClickActive && consultingCapabilities.map((capability, index) => {
-                // Solo mostrar cuando hay un círculo seleccionado
-                if (!hoveredPractice) return null;
+              {/* Capacidades unificadas con animación entre estados */}
+              {consultingCapabilities.map((capability, index) => {
+                // Calcular posición de grid (estado inicial)
+                const gridPos = getGridPosition(index);
                 
-                // Encontrar el índice del círculo seleccionado
-                const hoveredIndex = practiceAreas.findIndex(p => p.id === hoveredPractice);
-                if (hoveredIndex === -1) return null;
+                // Calcular posición orbital (cuando hay un practice seleccionado)
+                const orbitPos = getOrbitPosition(index, hoveredPractice || "");
                 
-                // Calcular ángulo y posición del círculo seleccionado
-                const practiceAngle = getDistributionAngle(hoveredIndex, practiceAreas.length);
-                const practiceRadius = getResponsiveRadius();
-                const { x: practiceX, y: practiceY } = getPosition(practiceAngle, practiceRadius);
-                
-                // Calcular posición orbital alrededor del círculo seleccionado
-                const orbitRadius = isMobile ? 70 : 100;
-                const orbitAngle = (360 / consultingCapabilities.length * index);
-                const { x: orbitX, y: orbitY } = getPosition(orbitAngle, orbitRadius);
-                
-                // Posición final en órbita
-                const finalX = practiceX + orbitX;
-                const finalY = practiceY + orbitY;
+                // Determinar posición final basada en si hay un practice seleccionado
+                const finalPos = hoveredPractice ? orbitPos : gridPos;
                 
                 return (
                   <motion.div
-                    key={`orbit-${capability}`}
-                    className="absolute bg-accent/10 text-accent px-3 py-1.5 rounded-full text-xs font-mono cursor-pointer border border-accent/30 capability-tag shadow-sm hover:bg-accent/20 transition-all duration-300"
+                    key={`capability-${capability}`}
+                    className="absolute bg-accent/10 text-accent px-3 py-1.5 rounded-full text-xs font-mono cursor-pointer border border-accent/30 capability-tag shadow-sm hover:bg-accent/20 transition-colors duration-300"
                     initial={{ 
                       opacity: 0,
-                      x: 0, 
-                      y: -200,
+                      x: gridPos.x,
+                      y: gridPos.y,
                     }}
                     animate={{
                       opacity: 1,
-                      x: finalX,
-                      y: finalY,
-                      scale: 1.1,
-                      boxShadow: "0 0 15px rgba(79, 70, 229, 0.5)"
+                      x: finalPos.x,
+                      y: finalPos.y,
+                      scale: hoveredPractice ? 1.1 : 1,
+                      boxShadow: hoveredPractice 
+                        ? "0 0 15px rgba(79, 70, 229, 0.3)" 
+                        : "0 0 5px rgba(79, 70, 229, 0.1)"
                     }}
                     transition={{ 
                       type: "spring", 
-                      stiffness: 200, 
+                      stiffness: 120, 
                       damping: 20,
-                      delay: index * 0.05 
+                      delay: index * 0.03
                     }}
                     style={{
                       zIndex: 40,
                     }}
-                    whileHover={{ scale: 1.15 }}
+                    whileHover={{ scale: hoveredPractice ? 1.15 : 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     {capability}
@@ -181,7 +187,7 @@ export const SolutionsCapabilitiesSection = () => {
                   index={index}
                   totalItems={practiceAreas.length}
                   hoveredPractice={hoveredPractice}
-                  setHoveredPractice={handlePracticeSelection}
+                  setHoveredPractice={setHoveredPractice}
                   getDistributionAngle={getDistributionAngle}
                   getPosition={getPosition}
                   getResponsiveRadius={getResponsiveRadius}
