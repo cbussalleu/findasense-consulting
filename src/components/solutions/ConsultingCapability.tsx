@@ -25,20 +25,37 @@ export const ConsultingCapability = ({
   
   // Calculate initial position for capabilities
   const getHorizontalPosition = () => {
-    // Para una distribución en 2 filas con 3 columnas debajo del badge
-    const columns = 3;
+    // Cambiamos a 2 columnas (en lugar de 3) para evitar superposición
+    const columns = 2;
     const row = Math.floor(index / columns);
     const col = index % columns;
     
-    // Ajustamos el espaciado horizontal para que queden bien distribuidas
-    const spacing = isMobile ? 110 : 170;
+    // Aumentamos el espaciado horizontal para evitar superposición
+    const spacing = isMobile ? 170 : 220;
     const centerOffset = spacing * (columns - 1) / 2;
-    const x = (col * spacing) - centerOffset;
+    
+    // Calculamos la posición horizontal con offset para centrar
+    // Ajustamos el offset general para mejorar el centrado
+    let x = (col * spacing) - centerOffset;
+    
+    // Para 6 elementos en 3 filas de 2, ajustamos para cada fila
+    // Primera fila centrada
+    if (index < 2) {
+      x += 0; // Sin ajuste para la primera fila
+    } 
+    // Segunda fila con ligero desplazamiento para alternar
+    else if (index < 4) {
+      x += isMobile ? 20 : 30;
+    }
+    // Tercera fila con otro desplazamiento
+    else {
+      x -= isMobile ? 20 : 30;
+    }
     
     // Valores para posicionar en el tercio superior, bien lejos de los círculos
-    // Usamos valores negativos mucho mayores para separarlas completamente
-    const baseY = isMobile ? -220 : -250;  
-    const rowSpacing = isMobile ? 60 : 70;
+    const baseY = isMobile ? -220 : -250;
+    // Aumentamos espaciado vertical entre filas
+    const rowSpacing = isMobile ? 70 : 80;
     const y = baseY + (row * rowSpacing);
     
     return { x, y };
