@@ -1,96 +1,122 @@
-import { useEffect, useRef, useState } from 'react';
-import { PracticeArea } from './PracticeArea';
-import { ConsultingCapability } from './ConsultingCapability';
-import { practiceAreas, consultingCapabilities } from './data';
+import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-export const SolutionsCapabilitiesSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [hoveredPractice, setHoveredPractice] = useState<string | null>(null);
+interface ConsultingCapabilityProps {
+  capability: string;
+  index: number;
+  totalItems: number;
+  hoveredPractice: string | null;
+  practiceAreas: Array<{
+    id: string;
+    name: string;
+    color: string;
+    subsets: string[];
+  }>;
+}
+
+export const ConsultingCapability = ({ 
+  capability, 
+  index, 
+  totalItems, 
+  hoveredPractice,
+  practiceAreas
+}: ConsultingCapabilityProps) => {
   const isMobile = useIsMobile();
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+  
+  // Calculate initial position for capabilities
+  const getHorizontalPosition = () => {
+    // Determinamos la distribución basada en el ancho de pantalla
+    let columns = 2; // Default para móvil
+    
+    if (!isMobile) {
+      const isWideScreen = typeof window !== 'undefined' && window.innerWidth > 1200;
+      if (isWideScreen) {
+        columns = 3; // 3 elementos por fila en pantallas anchas
+      } else {
+        columns = 2; // Desktop normal: 2 columnas
       }
-    };
-  }, []);
+    }
+    
+    // Determinar fila y columna basado en índice
+    const row = Math.floor(index / columns);
+    const col = index % columns;
+    
+    // Calcular espaciado horizontal apropiado
+    let spacing = isMobile ? 170 : 200;
+    if (!isMobile && typeof window !== 'undefined' && window.innerWidth > 1200) {
+      spacing = 260; // Más espacio en pantallas anchas
+    }
+    
+    const centerOffset = spacing * (columns - 1) / 2;
+    const x = (col * spacing) - centerOffset;
+    
+    // REDUCIMOS los valores negativos para acercar las capacidades al badge
+    const baseY = isMobile ? -170 : -200; // Valores menos negativos = más cerca del badge
+    const rowSpacing = isMobile ? 70 : 80;
+    const y = baseY + (row * rowSpacing);
+    
+    return { x, y };
+  };
+
+  // Initial position
+  const position = getHorizontalPosition();
+  const initialX = position.x;
+  const initialY = position.y;
+  
+  // When a practice is hovered, animate to that practice
+  let finalX = initialX;
+  let finalY = initialY;
+  
+  if (hoveredPractice) {
+    // Find the hovered practice's position
+    const hoveredIndex = practiceAreas.findIndex(p => p.id === hoveredPractice);
+    if (hoveredIndex !== -1) {
+      // Calculate angle for practice position
+      const angleStep = 360 / practiceAreas.length;
+      const practiceAngle = angleStep * hoveredIndex;
+      
+      // Calculate practice position
+      const practiceRadius = isMobile ? 90 : 170;
+      const practiceX = Math.cos((practiceAngle * Math.PI) / 180) * practiceRadius;
+      const practiceY = Math.sin((practiceAngle * Math.PI) / 180) * practiceRadius;
+      
+      // Calculate orbit position around the hovered practice
+      const orbitRadius = isMobile ? 80 : 100;
+      const orbitAngle = 360 / totalItems * index;
+      const orbitX = Math.cos((orbitAngle * Math.PI) / 180) * orbitRadius;
+      const orbitY = Math.sin((orbitAngle * Math.PI) / 180) * orbitRadius;
+      
+      // Position capability to orbit around the hovered practice
+      finalX = practiceX + orbitX;
+      finalY = practiceY + orbitY;
+    }
+  }
 
   return (
-    <section 
-      id="solutions"
-      ref={sectionRef} 
-      className={`py-24 min-h-screen bg-dark transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
+    <motion.div
+      className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer border border-accent/20 capability-tag"
+      style={{
+        top: `calc(50% + ${initialY}px)`,
+        left: `calc(50% + ${initialX}px)`,
+        transform: "translate(-50%, -50%)",
+        zIndex: 40
+      }}
+      animate={{
+        top: `calc(50% + ${finalY}px)`,
+        left: `calc(50% + ${finalX}px)`,
+        scale: hoveredPractice ? 1.1 : 1,
+        boxShadow: hoveredPractice ? "0 0 15px rgba(79, 70, 229, 0.5)" : "none"
+      }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 100, 
+        damping: 10,
+        delay: index * 0.05 
+      }}
+      whileHover={{ scale: 1.15 }}
+      whileTap={{ scale: 0.95 }}
     >
-      <div className="section-container">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white leading-tight max-w-5xl mx-auto uppercase">
-            <span className="text-accent">NUESTRAS CAPACIDADES</span> SE INTEGRAN EN CADA PRÁCTICA PARA <span className="text-primary">OFRECER SOLUCIONES</span> A NUESTROS CLIENTES
-          </h2>
-          <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
-        </div>
-        
-        {/* Legend for Consulting Capabilities */}
-        <div className="text-center mb-8">
-          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
-            <span className="mr-2 animate-pulse">●</span>
-            <span>Capacidades Consulting</span>
-          </div>
-        </div>
-        
-        <div className="relative w-full mx-auto" style={{ height: isMobile ? '600px' : '700px' }}>
-          {/* Consulting capabilities - mantenemos estas arriba */}
-          <div className="w-full">
-            {consultingCapabilities.map((capability, index) => (
-              <ConsultingCapability
-                key={capability}
-                capability={capability}
-                index={index}
-                totalItems={consultingCapabilities.length}
-                hoveredPractice={hoveredPractice}
-                practiceAreas={practiceAreas}
-              />
-            ))}
-          </div>
-          
-          {/* Practice Areas - MOVIDAS MÁS ABAJO */}
-          <div 
-            className="w-full absolute bottom-0 left-0 right-0 flex justify-center items-center"
-            style={{ 
-              height: isMobile ? '400px' : '450px',
-              // Con esto movemos los círculos más abajo
-              transform: 'translateY(30px)' 
-            }}
-          >
-            {practiceAreas.map((practice, index) => (
-              <PracticeArea
-                key={practice.id}
-                practice={practice}
-                index={index}
-                totalItems={practiceAreas.length}
-                hoveredPractice={hoveredPractice}
-                setHoveredPractice={setHoveredPractice}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
+      {capability}
+    </motion.div>
   );
 };
