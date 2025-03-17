@@ -50,8 +50,9 @@ export const ConsultingCapability = ({
     const centerOffset = spacing * (columns - 1) / 2;
     const x = (col * spacing) - centerOffset;
     
-    // Valor extremadamente negativo para asegurar que estén muy por encima de los círculos
-    const baseY = isMobile ? -400 : -480;
+    // AJUSTAMOS: valores más moderados para no chocar con el título
+    // pero aún manteniendo distancia de los círculos
+    const baseY = isMobile ? -220 : -250;
     const rowSpacing = isMobile ? 70 : 80;
     const y = baseY + (row * rowSpacing);
     
@@ -99,21 +100,13 @@ export const ConsultingCapability = ({
         top: `calc(50% + ${initialY}px)`,
         left: `calc(50% + ${initialX}px)`,
         transform: "translate(-50%, -50%)",
-        // Asegúrate de que siempre están visibles y por encima de los círculos
-        zIndex: 50,
-        opacity: 1,
-        willChange: "top, left, transform" // Optimización para animaciones suaves
+        zIndex: 40 // Alto, pero no tan alto como el título
       }}
       animate={{
         top: `calc(50% + ${finalY}px)`,
         left: `calc(50% + ${finalX}px)`,
         scale: hoveredPractice ? 1.1 : 1,
-        zIndex: 50, // Mantenemos el z-index alto incluso durante la animación
         boxShadow: hoveredPractice ? "0 0 15px rgba(79, 70, 229, 0.5)" : "none"
-      }}
-      initial={{ 
-        opacity: 1, // Asegura que estén visibles desde el principio
-        scale: 1
       }}
       transition={{ 
         type: "spring", 
