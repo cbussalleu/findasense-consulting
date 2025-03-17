@@ -23,28 +23,28 @@ export const ConsultingCapability = ({
 }: ConsultingCapabilityProps) => {
   const isMobile = useIsMobile();
   
-  // Calculate initial position for capabilities aligned below the legend
+  // Calculate initial position for capabilities
   const getHorizontalPosition = () => {
-    // Organizar en 2 filas con 3 elementos por fila
+    // Para una distribución en 2 filas con 3 columnas debajo del badge
     const columns = 3;
     const row = Math.floor(index / columns);
     const col = index % columns;
     
-    // Espaciado horizontal entre capacidades
-    const spacing = isMobile ? 110 : 190;
+    // Ajustamos el espaciado horizontal para que queden bien distribuidas
+    const spacing = isMobile ? 110 : 170;
     const centerOffset = spacing * (columns - 1) / 2;
     const x = (col * spacing) - centerOffset;
     
-    // Valores muy negativos para mover las capacidades mucho más arriba
-    // Estas capacidades deben aparecer justo debajo del badge "Capacidades Consulting"
-    const baseY = isMobile ? -150 : -180; // Valor mucho más negativo
+    // Valores para posicionar en el tercio superior, bien lejos de los círculos
+    // Usamos valores negativos mucho mayores para separarlas completamente
+    const baseY = isMobile ? -220 : -250;  
     const rowSpacing = isMobile ? 60 : 70;
     const y = baseY + (row * rowSpacing);
     
     return { x, y };
   };
 
-  // Initial position: organized grid below legend
+  // Initial position
   const position = getHorizontalPosition();
   const initialX = position.x;
   const initialY = position.y;
