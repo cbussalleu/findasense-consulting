@@ -38,11 +38,6 @@ export const PracticeArea = ({
   // Tamaño responsivo para los círculos
   const circleSize = isMobile ? "w-20 h-20" : "w-28 h-28";
 
-  // Manejador de clic para mostrar/ocultar detalles
-  const handleClick = () => {
-    setHoveredPractice(hoveredPractice === practice.id ? null : practice.id);
-  };
-
   // Determinar si se deben mostrar los detalles de este círculo
   const showDetails = hoveredPractice === practice.id;
 
@@ -51,12 +46,12 @@ export const PracticeArea = ({
       key={practice.id}
       className={`absolute ${circleSize} ${practice.color} rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-300`}
       style={{
-        // Posicionamiento centrado en el punto calculado
-        top: `calc(50% + ${y}px)`,
-        left: `calc(50% + ${x}px)`,
-        transform: "translate(-50%, -50%)",
-        // Añadir z-index base para garantizar visibilidad
-        zIndex: 20,
+        // Posicionamiento centrado usando translate para mayor precisión
+        top: "50%",
+        left: "50%",
+        transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+        // Añadir z-index más alto cuando está seleccionado
+        zIndex: hoveredPractice === practice.id ? 50 : 20,
       }}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ 
@@ -72,7 +67,7 @@ export const PracticeArea = ({
         delay: index * 0.1 // Animación escalonada para entrada
       }}
       whileHover={{ scale: 1.1 }}
-      onClick={handleClick}
+      onClick={() => setHoveredPractice(practice.id)}
     >
       <span className="text-xs sm:text-sm font-medium text-center px-1">{practice.name}</span>
       
