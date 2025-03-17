@@ -31,13 +31,14 @@ export const ConsultingCapability = ({
     const col = index % columns;
     
     // Espaciado horizontal entre capacidades
-    const spacing = isMobile ? 110 : 190; // Spacing between items
-    const centerOffset = spacing * (columns - 1) / 2; // Center the group
+    const spacing = isMobile ? 110 : 190;
+    const centerOffset = spacing * (columns - 1) / 2;
     const x = (col * spacing) - centerOffset;
     
-    // Posición vertical - ajustada para que aparezcan justo debajo del badge
-    const baseY = isMobile ? 120 : 150; // Distancia desde "Capacidades Consulting"
-    const rowSpacing = isMobile ? 60 : 70; // Espaciado entre filas
+    // Valores muy negativos para mover las capacidades mucho más arriba
+    // Estas capacidades deben aparecer justo debajo del badge "Capacidades Consulting"
+    const baseY = isMobile ? -150 : -180; // Valor mucho más negativo
+    const rowSpacing = isMobile ? 60 : 70;
     const y = baseY + (row * rowSpacing);
     
     return { x, y };
