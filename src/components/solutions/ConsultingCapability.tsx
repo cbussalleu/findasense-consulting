@@ -25,45 +25,22 @@ export const ConsultingCapability = ({
   
   // Calculate initial position for capabilities
   const getHorizontalPosition = () => {
-    // Determinamos la distribución basada en el ancho de pantalla
-    let columns = 2; // Default para móvil
-    
-    if (!isMobile) {
-      const isWideScreen = typeof window !== 'undefined' && window.innerWidth > 1200;
-      if (isWideScreen) {
-        columns = 3; // 3 elementos por fila en pantallas anchas
-      } else {
-        columns = 2; // Desktop normal: 2 columnas
-      }
-    }
+    // Forzamos 3 columnas y 2 filas como se ve en la imagen
+    const columns = 3;
     
     // Determinar fila y columna basado en índice
     const row = Math.floor(index / columns);
     const col = index % columns;
     
-    // Calcular espaciado horizontal apropiado
-    let spacing = isMobile ? 170 : 200;
-    if (!isMobile && typeof window !== 'undefined' && window.innerWidth > 1200) {
-      spacing = 260; // Más espacio en pantallas anchas
-    }
-    
-    // Garantizamos que estén perfectamente centrados
+    // Calculamos espaciado horizontal para mantener centrado con 3 columnas
+    const spacing = isMobile ? 120 : 180;
     const centerOffset = spacing * (columns - 1) / 2;
+    const x = (col * spacing) - centerOffset;
     
-    // Ajustamos cálculo para pantallas ultra-anchas
-    let x = (col * spacing) - centerOffset;
-    
-    // Si hay una sola fila con 3 elementos, aseguramos centrado perfecto
-    if (columns === 3 && totalItems === 6) {
-      // Si es el último elemento de la segunda fila y está solo
-      if (index === 5) {
-        x = 0; // Centrado perfecto para el elemento solitario
-      }
-    }
-    
-    // REDUCIMOS MUCHO MÁS la distancia vertical
-    const baseY = isMobile ? -120 : -140; // Valores mucho menos negativos para estar más cerca
-    const rowSpacing = isMobile ? 60 : 70; // Reducimos también el espaciado entre filas
+    // Espacio mínimo entre el badge y la primera fila (como se ve en la imagen)
+    // Un valor muy pequeño para tener el mínimo espacio
+    const baseY = isMobile ? -30 : -50;
+    const rowSpacing = isMobile ? 60 : 70;
     const y = baseY + (row * rowSpacing);
     
     return { x, y };
