@@ -36,48 +36,50 @@ export const SolutionsCapabilitiesSection = () => {
     <section 
       id="solutions"
       ref={sectionRef} 
-      className={`py-24 min-h-screen bg-dark transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
+      className={`py-24 min-h-[1000px] bg-dark transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
     >
       <div className="section-container">
-        <div className="text-center mb-12">
+        <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-white leading-tight max-w-5xl mx-auto uppercase">
             <span className="text-accent">NUESTRAS CAPACIDADES</span> SE INTEGRAN EN CADA PRÁCTICA PARA <span className="text-primary">OFRECER SOLUCIONES</span> A NUESTROS CLIENTES
           </h2>
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
-        {/* Legend for Consulting Capabilities */}
-        <div className="text-center mb-8">
-          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
-            <span className="mr-2 animate-pulse">●</span>
-            <span>Capacidades Consulting</span>
+        {/* GRUPO UNIFICADO: Badge + Capacidades */}
+        <div className="relative flex flex-col items-center mb-32">
+          {/* Badge */}
+          <div className="mb-8">
+            <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
+              <span className="mr-2 animate-pulse">●</span>
+              <span>Capacidades Consulting</span>
+            </div>
+          </div>
+          
+          {/* Capacidades - ahora como elementos estáticos, no absolutos */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-3xl mx-auto">
+            {consultingCapabilities.map((capability) => (
+              <div 
+                key={capability}
+                className={`bg-accent/10 text-accent px-3 py-2 rounded-full text-xs font-mono text-center cursor-pointer border border-accent/20 transition-all duration-300 ${
+                  hoveredPractice ? "opacity-50 hover:opacity-100" : ""
+                }`}
+                onClick={() => {
+                  // Deseleccionar cuando ya hay uno seleccionado
+                  if (hoveredPractice) {
+                    setHoveredPractice(null);
+                  }
+                }}
+              >
+                {capability}
+              </div>
+            ))}
           </div>
         </div>
         
-        <div className="relative w-full mx-auto" style={{ height: isMobile ? '600px' : '700px' }}>
-          {/* Consulting capabilities - mantenemos estas arriba */}
-          <div className="w-full">
-            {consultingCapabilities.map((capability, index) => (
-              <ConsultingCapability
-                key={capability}
-                capability={capability}
-                index={index}
-                totalItems={consultingCapabilities.length}
-                hoveredPractice={hoveredPractice}
-                practiceAreas={practiceAreas}
-              />
-            ))}
-          </div>
-          
-          {/* Practice Areas - MOVIDAS MÁS ABAJO */}
-          <div 
-            className="w-full absolute bottom-0 left-0 right-0 flex justify-center items-center"
-            style={{ 
-              height: isMobile ? '400px' : '450px',
-              // Con esto movemos los círculos más abajo
-              transform: 'translateY(30px)' 
-            }}
-          >
+        {/* CÍRCULOS - Completamente separados */}
+        <div className="relative w-full h-[400px] md:h-[500px]">
+          <div className="w-full h-full flex justify-center items-center">
             {practiceAreas.map((practice, index) => (
               <PracticeArea
                 key={practice.id}
@@ -86,6 +88,7 @@ export const SolutionsCapabilitiesSection = () => {
                 totalItems={practiceAreas.length}
                 hoveredPractice={hoveredPractice}
                 setHoveredPractice={setHoveredPractice}
+                consultingCapabilities={consultingCapabilities}
               />
             ))}
           </div>
