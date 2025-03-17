@@ -23,38 +23,30 @@ export const ConsultingCapability = ({
 }: ConsultingCapabilityProps) => {
   const isMobile = useIsMobile();
   
-  // Calculate initial position for capabilities
+  // Calculate initial position for capabilities aligned below the legend
   const getHorizontalPosition = () => {
-    // Cambiamos a 2 columnas (en lugar de 3) para evitar superposición
-    const columns = 2;
+    // Distribución responsiva: 2 columnas en móvil, 3 en tablet, 6 en desktop grande
+    const getColumns = () => {
+      if (isMobile) return 2;
+      
+      // Detectamos si estamos en una pantalla muy ancha (>1200px)
+      const isWideScreen = window.innerWidth > 1200;
+      if (isWideScreen) return Math.min(6, totalItems); // Una sola fila en pantallas anchas
+      
+      return 3; // 3 columnas para tablet/desktop normal
+    };
+    
+    const columns = getColumns();
     const row = Math.floor(index / columns);
     const col = index % columns;
     
-    // Aumentamos el espaciado horizontal para evitar superposición
-    const spacing = isMobile ? 170 : 220;
+    // Ajustamos el espaciado según el ancho de pantalla
+    const spacing = isMobile ? 170 : (window.innerWidth > 1200 ? 140 : 180);
     const centerOffset = spacing * (columns - 1) / 2;
+    const x = (col * spacing) - centerOffset;
     
-    // Calculamos la posición horizontal con offset para centrar
-    // Ajustamos el offset general para mejorar el centrado
-    let x = (col * spacing) - centerOffset;
-    
-    // Para 6 elementos en 3 filas de 2, ajustamos para cada fila
-    // Primera fila centrada
-    if (index < 2) {
-      x += 0; // Sin ajuste para la primera fila
-    } 
-    // Segunda fila con ligero desplazamiento para alternar
-    else if (index < 4) {
-      x += isMobile ? 20 : 30;
-    }
-    // Tercera fila con otro desplazamiento
-    else {
-      x -= isMobile ? 20 : 30;
-    }
-    
-    // Valores para posicionar en el tercio superior, bien lejos de los círculos
-    const baseY = isMobile ? -220 : -250;
-    // Aumentamos espaciado vertical entre filas
+    // Aumentamos significativamente la distancia vertical para evitar superposición
+    const baseY = isMobile ? -220 : -290; // Más alejado de los círculos
     const rowSpacing = isMobile ? 70 : 80;
     const y = baseY + (row * rowSpacing);
     
