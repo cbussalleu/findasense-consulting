@@ -6,9 +6,32 @@ import { PracticeArea } from './PracticeArea';
 
 export const SolutionsCapabilitiesSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredPractice, setHoveredPractice] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  const [badgePosition, setBadgePosition] = useState({ top: 0, left: 0 });
+
+  // Actualizar la posición del badge cuando cambia el tamaño de la ventana
+  useEffect(() => {
+    const updateBadgePosition = () => {
+      if (badgeRef.current) {
+        const rect = badgeRef.current.getBoundingClientRect();
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        setBadgePosition({
+          top: rect.top + scrollTop,
+          left: rect.left + rect.width / 2
+        });
+      }
+    };
+
+    // Actualizar posición inicial
+    updateBadgePosition();
+
+    // Actualizar cuando cambia el tamaño de la ventana
+    window.addEventListener('resize', updateBadgePosition);
+    return () => window.removeEventListener('resize', updateBadgePosition);
+  }, []);
 
   // Intersection Observer para detectar cuando la sección es visible
   useEffect(() => {
@@ -65,20 +88,29 @@ export const SolutionsCapabilitiesSection = () => {
 
   // Función para calcular posiciones de grid (estado inicial)
   const getGridPosition = (index: number) => {
-    // Grid de 3 columnas
+    // Calcular posición absoluta relativa al badge
     const columns = 3;
     const column = index % columns;
     const row = Math.floor(index / columns);
     
-    // Ajustes responsivos para posicionar el grid correctamente
-    const baseX = isMobile ? -100 : -150;
-    const baseY = -80;
-    const columnWidth = isMobile ? 100 : 150;
+    // Ajustes para posicionar las capacidades en forma de grid debajo del badge
+    const columnWidth = isMobile ? 105 : 160;
+    const startX = (columns * columnWidth) / -2 + (columnWidth / 2); // Centrar el grid
+    const startY = 60; // Distancia debajo del badge
     const rowHeight = 50;
     
+    // Posición relativa al centro de la sección
+    const sectionCenterX = window.innerWidth / 2;
+    const gridX = startX + (column * columnWidth);
+    const gridY = startY + (row * rowHeight);
+    
+    // Convertir posición relativa al badge a posición absoluta
+    // Pero si badgePosition.left es 0 (no inicializado), usar posición centrada directa
+    const offsetX = badgePosition.left ? badgePosition.left - sectionCenterX : 0;
+    
     return {
-      x: baseX + (column * columnWidth),
-      y: baseY + (row * rowHeight)
+      x: gridX + offsetX,
+      y: gridY
     };
   };
 
@@ -121,9 +153,12 @@ export const SolutionsCapabilitiesSection = () => {
           <div className="mt-8 w-24 h-1 bg-accent mx-auto"></div>
         </div>
         
-        {/* Badge "Capacidades Consulting" */}
-        <div className="text-center mb-12 relative">
-          <div className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle">
+        {/* Badge "Capacidades Consulting" con referencia para posicionamiento */}
+        <div className="text-center mb-24 relative">
+          <div 
+            ref={badgeRef}
+            className="bg-accent/20 text-accent px-4 py-2 rounded-full inline-flex items-center text-sm font-mono border border-accent/30 shadow-lg shadow-accent/10 pulse-subtle"
+          >
             <span className="mr-2 animate-pulse">●</span>
             <span>Capacidades Consulting</span>
           </div>
