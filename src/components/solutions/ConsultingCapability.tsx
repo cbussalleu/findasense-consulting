@@ -37,9 +37,9 @@ export const ConsultingCapability = ({
     const centerOffset = spacing * (columns - 1) / 2;
     const x = (col * spacing) - centerOffset;
     
-    // Espacio mínimo entre el badge y la primera fila (como se ve en la imagen)
-    // Un valor muy pequeño para tener el mínimo espacio
-    const baseY = isMobile ? -30 : -50;
+    // Usamos valores positivos pequeños para acercar al badge
+    // IMPORTANTE: Aquí está el cambio clave - valores positivos en lugar de negativos
+    const baseY = isMobile ? 50 : 80;
     const rowSpacing = isMobile ? 60 : 70;
     const y = baseY + (row * rowSpacing);
     
@@ -84,13 +84,13 @@ export const ConsultingCapability = ({
     <motion.div
       className="absolute bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-mono cursor-pointer border border-accent/20 capability-tag"
       style={{
-        top: `calc(50% + ${initialY}px)`,
+        top: `calc(50% - 150px + ${initialY}px)`, // Restamos un valor fijo para mover todo el conjunto hacia arriba
         left: `calc(50% + ${initialX}px)`,
         transform: "translate(-50%, -50%)",
         zIndex: 40
       }}
       animate={{
-        top: `calc(50% + ${finalY}px)`,
+        top: hoveredPractice ? `calc(50% + ${finalY}px)` : `calc(50% - 150px + ${initialY}px)`,
         left: `calc(50% + ${finalX}px)`,
         scale: hoveredPractice ? 1.1 : 1,
         boxShadow: hoveredPractice ? "0 0 15px rgba(79, 70, 229, 0.5)" : "none"
